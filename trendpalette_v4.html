@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="aurora" data-accent="violet">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TrendPalette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════
+   THEME SYSTEM — 5 Colorful Themes
+══════════════════════════════════════════════ */
+:root{
+  --r:12px;--r-sm:8px;--r-lg:18px;--r-xl:24px;
+  --shadow:0 2px 16px rgba(0,0,0,.12);--shadow-lg:0 8px 40px rgba(0,0,0,.2);
+  --trans:.18s cubic-bezier(.4,0,.2,1);
+}
+/* AURORA — deep purple/teal */
+[data-theme="aurora"]{
+  --bg:#0f0c1a;--bg2:#16122a;--surface:#1e1833;--surface2:#261f3e;--surface3:#2f2750;
+  --border:rgba(180,140,255,.1);--border-hi:rgba(180,140,255,.2);
+  --text:#f0ecff;--text2:rgba(240,236,255,.6);--text3:rgba(240,236,255,.32);
+  --inv:#0f0c1a;
+  --grad:linear-gradient(135deg,#7c3aed,#2563eb);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,.15),rgba(37,99,235,.1));
+}
+/* SUNSET — warm coral/orange */
+[data-theme="sunset"]{
+  --bg:#1a0e0a;--bg2:#261610;--surface:#321e16;--surface2:#3d2820;--surface3:#4a3028;
+  --border:rgba(255,160,100,.1);--border-hi:rgba(255,160,100,.2);
+  --text:#fff5f0;--text2:rgba(255,245,240,.6);--text3:rgba(255,245,240,.32);
+  --inv:#1a0e0a;
+  --grad:linear-gradient(135deg,#ea580c,#dc2626);
+  --grad-soft:linear-gradient(135deg,rgba(234,88,12,.15),rgba(220,38,38,.1));
+}
+/* OCEAN — deep teal/cyan */
+[data-theme="ocean"]{
+  --bg:#091520;--bg2:#0e1f2e;--surface:#152a3d;--surface2:#1c3550;--surface3:#234062;
+  --border:rgba(100,220,255,.1);--border-hi:rgba(100,220,255,.2);
+  --text:#ecfbff;--text2:rgba(236,251,255,.6);--text3:rgba(236,251,255,.32);
+  --inv:#091520;
+  --grad:linear-gradient(135deg,#0891b2,#0d9488);
+  --grad-soft:linear-gradient(135deg,rgba(8,145,178,.15),rgba(13,148,136,.1));
+}
+/* FOREST — sage/emerald */
+[data-theme="forest"]{
+  --bg:#0a140e;--bg2:#111c14;--surface:#18261c;--surface2:#1f3024;--surface3:#263b2c;
+  --border:rgba(100,200,130,.1);--border-hi:rgba(100,200,130,.2);
+  --text:#f0fff4;--text2:rgba(240,255,244,.6);--text3:rgba(240,255,244,.32);
+  --inv:#0a140e;
+  --grad:linear-gradient(135deg,#16a34a,#059669);
+  --grad-soft:linear-gradient(135deg,rgba(22,163,74,.15),rgba(5,150,105,.1));
+}
+/* LAVENDER — soft light theme */
+[data-theme="lavender"]{
+  --bg:#f8f6ff;--bg2:#f0ecff;--surface:#fff;--surface2:#f5f2ff;--surface3:#ede9ff;
+  --border:rgba(109,40,217,.1);--border-hi:rgba(109,40,217,.18);
+  --text:#1e1433;--text2:rgba(30,20,51,.55);--text3:rgba(30,20,51,.3);
+  --inv:#fff;
+  --grad:linear-gradient(135deg,#7c3aed,#a855f7);
+  --grad-soft:linear-gradient(135deg,rgba(124,58,237,.1),rgba(168,85,247,.07));
+}
+/* ACCENT system */
+[data-accent="violet"]{--accent:#8b5cf6;--ac2:#a78bfa;--ag:rgba(139,92,246,.18);--ad:rgba(139,92,246,.08)}
+[data-accent="coral"]{--accent:#f97316;--ac2:#fb923c;--ag:rgba(249,115,22,.18);--ad:rgba(249,115,22,.08)}
+[data-accent="cyan"]{--accent:#06b6d4;--ac2:#22d3ee;--ag:rgba(6,182,212,.18);--ad:rgba(6,182,212,.08)}
+[data-accent="rose"]{--accent:#f43f5e;--ac2:#fb7185;--ag:rgba(244,63,94,.18);--ad:rgba(244,63,94,.08)}
+[data-accent="emerald"]{--accent:#10b981;--ac2:#34d399;--ag:rgba(16,185,129,.18);--ad:rgba(16,185,129,.08)}
+[data-accent="gold"]{--accent:#f59e0b;--ac2:#fbbf24;--ag:rgba(245,158,11,.18);--ad:rgba(245,158,11,.08)}
+
+/* ══════════════════════════════════════════════
+   RESET & BASE
+══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+body{font-family:'DM Sans',sans-serif;font-size:1rem;line-height:1.55;background:var(--bg);color:var(--text);min-height:100vh;overflow:hidden;transition:background var(--trans),color var(--trans)}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea,select{font-family:inherit;font-size:inherit;outline:none}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-hi);border-radius:4px}
+
+/* ── TYPE ── */
+.serif{font-family:'DM Serif Display',serif}
+.mono{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.04em}
+.label{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3)}
+
+/* ══════════════════════════════════════════════
+   APP SHELL — 2-column layout (rail + main), sidebar is overlay
+══════════════════════════════════════════════ */
+.shell{display:grid;grid-template-columns:58px 1fr;grid-template-rows:52px 1fr;height:100vh}
+
+/* Sidebar now floats as overlay when section has sub-items */
+.sidebar{
+  position:fixed;left:58px;top:52px;bottom:0;width:200px;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow-y:auto;padding:14px 0;
+  z-index:150;transform:translateX(-100%);transition:transform .22s cubic-bezier(.4,0,.2,1);
+  box-shadow:4px 0 20px rgba(0,0,0,.2);
+}
+.sidebar.open{transform:translateX(0)}
+/* Overlay backdrop */
+#sb-backdrop{position:fixed;inset:0;top:52px;left:58px;z-index:149;display:none}
+#sb-backdrop.show{display:block}
+
+/* ══════════════════════════════════════════════
+   TOPBAR
+══════════════════════════════════════════════ */
+.topbar{
+  grid-column:1/-1;background:var(--surface);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 18px 0 0;z-index:200;gap:10px;
+}
+.tp-logo{
+  width:58px;height:100%;display:flex;align-items:center;justify-content:center;
+  border-right:1px solid var(--border);flex-shrink:0;cursor:pointer;
+}
+.tp-brand{
+  padding:0 16px;border-right:1px solid var(--border);height:100%;
+  display:flex;align-items:center;gap:8px;cursor:pointer;min-width:160px;
+}
+/* Page title breadcrumb in topbar */
+.tp-pagetitle{
+  font-size:.78rem;color:var(--text2);display:flex;align-items:center;gap:6px;
+  font-family:'JetBrains Mono',monospace;letter-spacing:.04em;
+}
+.tp-pagetitle .tp-section{color:var(--text3)}
+.tp-pagetitle .tp-sep{color:var(--text3)}
+.tp-pagetitle .tp-page{color:var(--text)}
+.brand-name{font-family:'DM Serif Display',serif;font-size:1.1rem;font-weight:400;letter-spacing:-.2px}
+.brand-name span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.tp-search{
+  flex:1;max-width:340px;margin-left:8px;
+  display:flex;align-items:center;gap:8px;
+  background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+  padding:6px 12px;font-size:.85rem;color:var(--text2);
+}
+.tp-search input{background:transparent;border:none;color:var(--text);width:100%;font-size:.85rem}
+.tp-search input::placeholder{color:var(--text3)}
+.tp-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+/* Theme & accent pickers */
+.theme-row{display:flex;gap:4px;align-items:center;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px}
+.th-dot{width:14px;height:14px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s;flex-shrink:0}
+.th-dot:hover,.th-dot.active{transform:scale(1.2);border-color:var(--text)}
+.acc-row{display:flex;gap:4px;align-items:center;padding:4px 8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px}
+.ac-dot{width:12px;height:12px;border-radius:3px;cursor:pointer;border:2px solid transparent;transition:transform .15s,border-color .15s}
+.ac-dot:hover,.ac-dot.active{transform:scale(1.2);border-color:var(--text)}
+.tp-avatar{width:32px;height:32px;border-radius:9px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:.9rem;color:#fff;cursor:pointer;border:none;flex-shrink:0}
+/* Plan badge */
+.plan-badge{padding:3px 9px;border-radius:5px;font-size:.65rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;background:var(--grad);color:#fff}
+
+.section-rail{
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:4px;overflow:hidden;
+  grid-column:1;grid-row:2;
+}
+/* Profile avatar with photo support */
+.rail-avatar{
+  width:38px;height:38px;border-radius:10px;overflow:hidden;
+  background:var(--grad);display:flex;align-items:center;justify-content:center;
+  font-family:'DM Serif Display',serif;font-size:.85rem;color:#fff;cursor:pointer;
+  border:1.5px solid transparent;transition:border-color .15s;flex-shrink:0;margin-bottom:2px;
+}
+.rail-avatar:hover{border-color:var(--accent)}
+.rail-avatar img{width:100%;height:100%;object-fit:cover}
+/* Chat FAB — floating action button bottom right */
+.chat-fab{
+  position:fixed;bottom:22px;right:22px;z-index:400;
+  width:52px;height:52px;border-radius:50%;
+  background:var(--grad);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px var(--ag),0 0 0 0 var(--ag);
+  cursor:pointer;border:none;transition:transform .15s,box-shadow .15s;
+  animation:fabPulse 3s ease-in-out infinite;
+}
+.chat-fab:hover{transform:scale(1.08);box-shadow:0 8px 30px var(--ag)}
+.chat-fab svg{width:22px;height:22px}
+@keyframes fabPulse{0%,100%{box-shadow:0 4px 20px var(--ag),0 0 0 0 rgba(139,92,246,.4)}50%{box-shadow:0 4px 20px var(--ag),0 0 0 8px rgba(139,92,246,0)}}
+.rail-btn{
+  width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .15s;color:var(--text3);position:relative;
+  border:1px solid transparent;flex-shrink:0;
+}
+.rail-btn:hover{background:var(--surface2);color:var(--text2)}
+.rail-btn.active{background:var(--ad);border-color:var(--ag);color:var(--accent)}
+.rail-btn svg{width:18px;height:18px}
+.rail-tip{
+  position:absolute;left:48px;background:var(--surface3);border:1px solid var(--border-hi);
+  border-radius:6px;padding:4px 10px;font-size:.72rem;white-space:nowrap;color:var(--text);
+  pointer-events:none;opacity:0;transition:opacity .15s;z-index:300;
+}
+.rail-btn:hover .rail-tip{opacity:1}
+.rail-divider{width:28px;height:1px;background:var(--border);margin:4px 0}
+.rail-bottom{margin-top:auto}
+
+/* (sidebar moved above) */
+.sb-section{padding:12px 14px 4px;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3)}
+.sb-item{
+  display:flex;align-items:center;gap:9px;padding:7px 14px;margin:1px 6px;
+  border-radius:8px;color:var(--text2);cursor:pointer;transition:all .15s;
+  font-size:.88rem;font-weight:400;border:1px solid transparent;user-select:none;
+}
+.sb-item:hover{background:var(--surface);color:var(--text)}
+.sb-item.active{background:var(--ad);border-color:var(--ag);color:var(--accent);font-weight:500}
+.sb-item svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
+.sb-badge{margin-left:auto;background:var(--accent);color:var(--inv);font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:10px}
+.sb-footer{margin-top:auto;padding:12px;border-top:1px solid var(--border)}
+.user-card{display:flex;align-items:center;gap:8px;padding:8px;background:var(--surface);border-radius:9px;border:1px solid var(--border);cursor:pointer;transition:border-color .15s}
+.user-card:hover{border-color:var(--accent)}
+.uc-av{width:28px;height:28px;background:var(--grad);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;font-size:.8rem;color:#fff;flex-shrink:0}
+.uc-name{font-size:.82rem;font-weight:500;line-height:1.2}
+.uc-role{font-size:.65rem;color:var(--text3)}
+
+/* ══════════════════════════════════════════════
+   MAIN CONTENT — full width now
+══════════════════════════════════════════════ */
+.main{overflow-y:auto;background:var(--bg);position:relative;grid-column:2;grid-row:2}
+.page{display:none;padding:24px;flex-direction:column;gap:20px;animation:pgIn .3s ease}
+.page.active{display:flex}
+@keyframes pgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════════════
+   COMPONENTS
+══════════════════════════════════════════════ */
+/* Page header */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.ph-t{font-family:'DM Serif Display',serif;font-size:1.8rem;font-weight:400;line-height:1}
+.ph-s{font-size:.9rem;color:var(--text2);margin-top:3px;font-style:italic}
+.ph-r{display:flex;gap:8px;align-items:center}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.card-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-title{font-size:.9rem;font-weight:600;display:flex;align-items:center;gap:7px}
+.chip{font-size:.6rem;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--ad);color:var(--accent);border:1px solid var(--ag)}
+.chip-grad{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:4px;background:var(--grad);color:#fff}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:8px;font-size:.85rem;font-weight:500;transition:all .15s;cursor:pointer;border:1px solid transparent;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.btn-primary{background:var(--grad);color:#fff;border:none}
+.btn-primary:hover{filter:brightness(1.1);box-shadow:0 4px 16px var(--ag);transform:translateY(-1px)}
+.btn-ghost{background:var(--surface2);color:var(--text);border-color:var(--border)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--ad)}
+.btn-outline{background:transparent;color:var(--accent);border-color:var(--accent)}
+.btn-outline:hover{background:var(--ad)}
+.btn-danger{background:rgba(239,68,68,.1);color:#ef4444;border-color:rgba(239,68,68,.2)}
+.btn-danger:hover{background:rgba(239,68,68,.2)}
+.btn-sm{padding:5px 11px;font-size:.78rem;border-radius:7px}
+.btn-xs{padding:3px 8px;font-size:.72rem;border-radius:6px}
+.btn-full{width:100%;justify-content:center}
+.btn-icon{padding:7px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);transition:all .15s;display:inline-flex;align-items:center;justify-content:center}
+.btn-icon:hover{border-color:var(--accent);color:var(--accent)}
+.btn-icon svg{width:15px;height:15px}
+
+/* Form */
+.field{display:flex;flex-direction:column;gap:5px}
+.fl{font-size:.65rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text3)}
+.input{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);width:100%;transition:border-color .15s}
+.input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ad)}
+.input::placeholder{color:var(--text3);font-style:italic}
+.textarea{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);resize:vertical;width:100%;min-height:80px;transition:border-color .15s}
+.textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--ad)}
+.textarea::placeholder{color:var(--text3);font-style:italic}
+select.input{cursor:pointer}
+
+/* Tags / Pills */
+.tag{display:inline-flex;align-items:center;padding:4px 10px;border-radius:6px;font-size:.75rem;font-weight:500;background:var(--surface2);border:1px solid var(--border);color:var(--text2);cursor:pointer;transition:all .15s;user-select:none}
+.tag.sel{background:var(--ad);border-color:var(--accent);color:var(--accent)}
+.tag:hover:not(.sel){border-color:var(--border-hi);color:var(--text)}
+
+/* KPI cards */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad)}
+.kpi-lbl{font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:7px}
+.kpi-val{font-family:'DM Serif Display',serif;font-size:2rem;font-weight:400;line-height:1;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-d{font-size:.72rem;color:#10b981;margin-top:4px}
+.kpi-d.neg{color:#f43f5e}
+
+/* Badge */
+.bdg{display:inline-flex;align-items:center;padding:2px 8px;border-radius:5px;font-size:.65rem;font-weight:600}
+.bdg-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.25)}
+.bdg-orange{background:rgba(245,158,11,.12);color:#f59e0b;border:1px solid rgba(245,158,11,.25)}
+.bdg-red{background:rgba(244,63,94,.12);color:#f43f5e;border:1px solid rgba(244,63,94,.25)}
+.bdg-accent{background:var(--ad);color:var(--accent);border:1px solid var(--ag)}
+
+/* Divider */
+.div{height:1px;background:var(--border);margin:4px 0}
+
+/* Spinner */
+.spin{width:14px;height:14px;border:2px solid var(--ag);border-top-color:var(--accent);border-radius:50%;animation:rot .7s linear infinite;display:inline-block;flex-shrink:0}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:500;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);animation:pgIn .2s ease}
+.modal{background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);width:600px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn .25s cubic-bezier(.34,1.2,.64,1);position:relative}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-head{padding:20px 22px 15px;border-bottom:1px solid var(--border)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:1.4rem}
+.modal-sub{font-size:.85rem;color:var(--text2);margin-top:2px;font-style:italic}
+.modal-body{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+.modal-x{position:absolute;top:12px;right:14px;width:26px;height:26px;border-radius:7px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;transition:all .15s}
+.modal-x:hover{border-color:var(--border-hi);color:var(--text)}
+
+/* Toast */
+#toasts{position:fixed;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:1000;pointer-events:none}
+.toast{background:var(--surface);border:1px solid var(--border-hi);border-radius:9px;padding:10px 16px;font-size:.85rem;box-shadow:var(--shadow);display:flex;align-items:center;gap:9px;border-left:3px solid var(--accent);animation:slideR .3s cubic-bezier(.34,1.2,.64,1);pointer-events:all;min-width:210px}
+@keyframes slideR{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:translateX(0)}}
+
+/* ══════════════════════════════════════════════
+   ONBOARDING
+══════════════════════════════════════════════ */
+#onboard{position:fixed;inset:0;background:var(--bg);z-index:900;display:flex;align-items:center;justify-content:center;overflow-y:auto;padding:20px}
+.ob-wrap{width:580px;max-width:100%}
+.ob-logo-area{text-align:center;margin-bottom:28px}
+.ob-pal{display:flex;gap:4px;justify-content:center;margin-bottom:14px;align-items:flex-end}
+.ob-sq{border-radius:3px}
+.ob-wm{font-family:'DM Serif Display',serif;font-size:2.2rem;font-weight:400;letter-spacing:-.3px}
+.ob-wm span{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ob-tagline{font-size:.85rem;color:var(--text2);font-style:italic;margin-top:4px}
+.ob-card{background:var(--surface);border:1px solid var(--border-hi);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-lg)}
+.ob-head{padding:22px 26px 16px;border-bottom:1px solid var(--border)}
+.ob-sn{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);margin-bottom:5px;font-family:'JetBrains Mono',monospace}
+.ob-ht{font-family:'DM Serif Display',serif;font-size:1.55rem;font-weight:400}
+.ob-hs{font-size:.88rem;color:var(--text2);margin-top:3px;font-style:italic}
+.ob-body{padding:20px 26px;min-height:170px}
+.ob-foot{padding:15px 26px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.ob-dots{display:flex;gap:6px;align-items:center}
+.ob-dot{width:6px;height:6px;border-radius:50%;background:var(--border-hi);transition:all .2s}
+.ob-dot.active{background:var(--accent);width:16px;border-radius:3px}
+.ob-dot.done{background:var(--accent);opacity:.4}
+/* Guest bar */
+.ob-guest-bar{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+/* Pick grid */
+.pick-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pick-btn{padding:12px 10px;background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;cursor:pointer;text-align:center;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px}
+.pick-btn:hover{border-color:var(--border-hi)}
+.pick-btn.sel{border-color:var(--accent);background:var(--ad)}
+.pick-icon{font-size:1.3rem;line-height:1}
+.pick-label{font-size:.85rem;font-weight:600;color:var(--text)}
+.pick-sub{font-size:.65rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.ind-grid{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ══════════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════════ */
+.dash-grid{display:grid;grid-template-columns:1fr 300px;gap:18px}
+/* Trend row */
+.trend-row{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.trend-row:hover{border-color:var(--accent);background:var(--ad)}
+.trend-num{font-family:'DM Serif Display',serif;font-size:1.3rem;color:var(--text3);text-align:center;line-height:1}
+.trend-num.hot{color:var(--accent)}
+.trend-name{font-size:.88rem;font-weight:600;margin-bottom:2px}
+.trend-chips{display:flex;gap:4px;flex-wrap:wrap}
+.trend-chip{font-size:.62rem;padding:1px 6px;background:var(--surface);border:1px solid var(--border);border-radius:3px;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.trend-bar{width:50px;height:3px;background:var(--border);border-radius:2px;margin-top:3px;margin-left:auto}
+.trend-bar-fill{height:100%;border-radius:2px;background:var(--grad)}
+/* Chart */
+.chart-bars{display:flex;align-items:flex-end;gap:7px;height:90px;border-bottom:1px solid var(--border)}
+.bar-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.bar{width:100%;border-radius:3px 3px 0 0;background:var(--surface2);border:1px solid var(--border);border-bottom:none;min-height:3px}
+.bar.today{background:var(--grad);border-color:transparent;box-shadow:0 0 10px var(--ag)}
+.bar-day{font-size:.62rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.bar-day.today{color:var(--accent)}
+/* Lead card */
+.lead-card{padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:all .15s;position:relative}
+.lead-card:hover{border-color:var(--accent);transform:translateX(2px)}
+.lead-hot{position:absolute;top:7px;right:9px;background:var(--grad);color:#fff;font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:9px}
+/* Insights */
+.insight{padding:10px 13px;border-radius:9px;border-left:3px solid var(--accent);background:var(--surface2);font-size:.83rem;line-height:1.5}
+.insight.warn{border-left-color:#f59e0b}
+.insight.good{border-left-color:#10b981}
+.insight-tag{font-size:.6rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.insight.warn .insight-tag{color:#d97706}
+.insight.good .insight-tag{color:#059669}
+/* Schedule mini */
+.sched-item{display:flex;align-items:center;gap:9px;padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px}
+.sched-time{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--text2);min-width:50px}
+
+/* ══════════════════════════════════════════════
+   CALENDAR SCHEDULER
+══════════════════════════════════════════════ */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;background:var(--border);border-radius:10px;overflow:hidden}
+.cal-day-header{background:var(--surface2);padding:8px 4px;text-align:center;font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.cal-day{background:var(--surface);min-height:90px;padding:6px 7px;cursor:pointer;transition:background .15s;position:relative;border:2px solid transparent}
+.cal-day:hover{background:var(--surface2)}
+.cal-day.today{border-color:var(--accent)}
+.cal-day.other-month{opacity:.4}
+.cal-day-num{font-size:.75rem;font-weight:600;color:var(--text2);margin-bottom:4px}
+.cal-day.today .cal-day-num{color:var(--accent);font-weight:700}
+.cal-post{font-size:.6rem;padding:2px 5px;border-radius:3px;margin-bottom:2px;color:#fff;cursor:pointer;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-weight:500}
+.cal-post.tw{background:#1da1f2}
+.cal-post.ig{background:linear-gradient(90deg,#833ab4,#fd1d1d,#fcb045);font-size:.58rem}
+.cal-post.li{background:#0077b5}
+.cal-post.tt{background:#000}
+.cal-post.yt{background:#ff0000}
+.cal-nav{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.cal-month{font-family:'DM Serif Display',serif;font-size:1.3rem}
+.cal-add-btn{position:absolute;bottom:4px;right:4px;width:16px;height:16px;border-radius:50%;background:var(--ad);border:1px solid var(--accent);color:var(--accent);font-size:.7rem;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s}
+.cal-day:hover .cal-add-btn{opacity:1}
+
+/* ══════════════════════════════════════════════
+   AI GENERATOR — with image upload
+══════════════════════════════════════════════ */
+.upload-zone{
+  border:2px dashed var(--border-hi);border-radius:12px;
+  padding:28px 20px;text-align:center;cursor:pointer;
+  transition:all .15s;background:var(--surface2);
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:var(--ad)}
+.upload-zone input{display:none}
+.upload-preview{position:relative;border-radius:10px;overflow:hidden;border:1px solid var(--border);max-height:200px}
+.upload-preview img{width:100%;height:200px;object-fit:contain;background:var(--surface2)}
+.upload-clear{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:.75rem;cursor:pointer;display:flex;align-items:center;justify-content:center;border:none}
+
+/* ══════════════════════════════════════════════
+   CLIENT TRACKER — Excel style
+══════════════════════════════════════════════ */
+.excel-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.excel-table th{
+  padding:8px 12px;text-align:left;font-size:.65rem;font-weight:700;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--text3);
+  border-bottom:2px solid var(--border);background:var(--surface2);
+  white-space:nowrap;
+}
+.excel-table td{padding:9px 12px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}
+.excel-table tr:hover td{background:var(--surface2)}
+.excel-table tr{cursor:pointer;transition:background .12s}
+.excel-table td:first-child{font-weight:600}
+/* Column resize handle visual */
+.excel-table th{position:relative}
+.excel-table th::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:var(--border-hi)}
+/* Sales heatmap colors */
+.hot-sale{background:rgba(16,185,129,.12);color:#10b981;font-weight:600}
+.med-sale{background:rgba(245,158,11,.08);color:#f59e0b}
+/* Product tracker */
+.product-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px}
+.product-rank{font-family:'DM Serif Display',serif;font-size:1.4rem;color:var(--text3);min-width:30px;text-align:center}
+.product-rank.first{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.product-bar-wrap{flex:1}
+.product-fill{height:5px;border-radius:3px;background:var(--grad);transition:width .8s ease}
+
+/* ══════════════════════════════════════════════
+   EDUCATION / LEARN
+══════════════════════════════════════════════ */
+.learn-hero{background:var(--grad);border-radius:var(--r-lg);padding:28px 32px;color:#fff;position:relative;overflow:hidden}
+.learn-hero::before{content:'';position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.08)}
+.article-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.article-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .2s}
+.article-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.article-thumb{height:120px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;overflow:hidden}
+.article-locked{position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;backdrop-filter:blur(2px)}
+.article-locked-ic{font-size:1.4rem}
+.article-locked-txt{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.8);background:var(--grad);padding:2px 8px;border-radius:4px}
+.article-body{padding:12px 14px}
+.article-title{font-size:.92rem;font-weight:600;margin-bottom:5px;line-height:1.35}
+.article-meta{font-size:.7rem;color:var(--text3);display:flex;gap:8px;align-items:center}
+.article-cat{font-size:.65rem;font-weight:600;padding:2px 7px;border-radius:4px;background:var(--ad);color:var(--accent);border:1px solid var(--ag)}
+/* Sponsored ad card */
+.ad-card{background:var(--surface);border:2px solid var(--accent);border-radius:var(--r);overflow:hidden;position:relative}
+.ad-badge{position:absolute;top:8px;right:8px;font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,.4);color:rgba(255,255,255,.7);padding:2px 6px;border-radius:3px}
+/* Platform spotlight */
+.platform-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:all .15s}
+.platform-card:hover{border-color:var(--accent);background:var(--ad)}
+.platform-icon-big{font-size:2rem}
+/* Popular posts */
+.pop-post{padding:12px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:8px}
+.pop-post-platform{display:inline-flex;align-items:center;gap:5px;font-size:.65rem;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:7px}
+.pp-ig{background:linear-gradient(90deg,#833ab4,#fd1d1d);color:#fff}
+.pp-tt{background:#000;color:#fff}
+.pp-yt{background:#ff0000;color:#fff}
+.pp-tw{background:#1da1f2;color:#fff}
+.pop-post-text{font-size:.85rem;line-height:1.5;margin-bottom:8px}
+.pop-post-stats{display:flex;gap:14px;font-size:.72rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.pop-post-stat{display:flex;align-items:center;gap:4px}
+.pop-post-stat strong{color:var(--accent)}
+
+/* ══════════════════════════════════════════════
+   WEBSITE BUILDER
+══════════════════════════════════════════════ */
+.site-url-bar{display:flex;align-items:center;gap:0;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--surface2)}
+.site-url-prefix{padding:8px 12px;background:var(--surface3);border-right:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--text2);white-space:nowrap}
+.site-url-input{flex:1;padding:8px 12px;background:transparent;border:none;color:var(--text);font-family:'JetBrains Mono',monospace;font-size:.85rem}
+.site-preview{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.site-preview-bar{padding:8px 12px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.site-dots{display:flex;gap:5px}
+.site-dot{width:10px;height:10px;border-radius:50%}
+.site-section-blocks{display:flex;flex-direction:column;gap:10px;padding:14px}
+.site-block{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:12px 14px;display:flex;align-items:center;gap:10px;cursor:grab;transition:all .15s}
+.site-block:hover{border-color:var(--accent)}
+.site-block-drag{font-size:.85rem;color:var(--text3)}
+.site-block-label{font-size:.85rem;font-weight:500;flex:1}
+.site-block-vis{width:32px;height:16px;border-radius:3px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:.5rem;color:var(--text3)}
+.feedback-preview{background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:16px;margin-top:8px}
+
+/* ══════════════════════════════════════════════
+   PROFILE / PORTFOLIO
+══════════════════════════════════════════════ */
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.port-item{background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s}
+.port-item:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.port-thumb{height:100px;background:var(--surface3);display:flex;align-items:center;justify-content:center;color:var(--text3);font-size:1.8rem;position:relative;overflow:hidden}
+.port-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.port-meta{padding:9px 11px}
+.port-title{font-size:.85rem;font-weight:600;margin-bottom:1px}
+.port-sub{font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+/* Resume PDF preview */
+.resume-preview{
+  background:#fff;color:#1a1a2e;border-radius:var(--r);padding:32px 36px;
+  max-width:620px;margin:0 auto;box-shadow:var(--shadow-lg);font-family:'DM Sans',sans-serif;
+}
+.resume-preview h1{font-family:'DM Serif Display',serif;font-size:1.8rem;color:#1a1a2e;margin-bottom:4px}
+.resume-preview h2{font-family:'DM Serif Display',serif;font-size:1rem;color:#555;font-weight:400;margin-bottom:16px;border-bottom:2px solid #7c3aed;padding-bottom:6px}
+.resume-section{margin-bottom:16px}
+.resume-section-title{font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7c3aed;margin-bottom:8px}
+.resume-item{margin-bottom:8px;font-size:.85rem;line-height:1.5;color:#333}
+
+/* ══════════════════════════════════════════════
+   SETTINGS — CUSTOMIZE
+══════════════════════════════════════════════ */
+.color-swatch{width:32px;height:32px;border-radius:8px;cursor:pointer;border:3px solid transparent;transition:all .15s}
+.color-swatch:hover,.color-swatch.active{border-color:var(--text);transform:scale(1.1)}
+.font-preview{padding:10px 14px;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;cursor:pointer;transition:all .15s}
+.font-preview.sel{border-color:var(--accent);background:var(--ad)}
+.font-preview-name{font-size:.72rem;font-weight:600;color:var(--accent);margin-bottom:2px}
+.font-preview-sample{font-size:1.1rem;color:var(--text)}
+
+/* ══════════════════════════════════════════════
+   CHATBOT
+══════════════════════════════════════════════ */
+.chat-page{display:flex;flex-direction:column;height:calc(100vh - 52px)}
+.chat-msgs{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;gap:9px;max-width:80%}
+.msg.user{flex-direction:row-reverse;align-self:flex-end}
+.msg-bubble{padding:10px 14px;border-radius:12px;font-size:.87rem;line-height:1.6;background:var(--surface2);border:1px solid var(--border);white-space:pre-wrap}
+.msg.user .msg-bubble{background:var(--grad);color:#fff;border:none}
+.msg-av{width:28px;height:28px;border-radius:7px;flex-shrink:0;background:var(--ad);border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:var(--accent)}
+.msg.user .msg-av{background:var(--grad);color:#fff;border:none}
+.chat-input-area{padding:12px 16px;border-top:1px solid var(--border);background:var(--surface);display:flex;gap:9px;align-items:flex-end}
+.chat-input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:9px 13px;color:var(--text);resize:none;max-height:100px;line-height:1.5;transition:border-color .15s}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--text3);font-style:italic}
+.typing-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--text3);animation:tdot 1.2s ease-in-out infinite;margin:0 2px}
+.typing-dots span:nth-child(2){animation-delay:.2s}
+.typing-dots span:nth-child(3){animation-delay:.4s}
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+</style>
+</head>
+<body>
+<div id="toasts"></div>
+<div id="mc"></div>
+
+<!-- ══════════════════════════════════════════
+     ONBOARDING
+══════════════════════════════════════════ -->
+<div id="onboard">
+ <div class="ob-wrap">
+  <div class="ob-logo-area">
+   <!-- TrendPalette Logo SVG -->
+   <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin:0 auto 12px;display:block">
+    <rect width="52" height="52" rx="14" fill="url(#lg)"/>
+    <defs><linearGradient id="lg" x1="0" y1="0" x2="52" y2="52"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs>
+    <rect x="8" y="30" width="6" height="14" rx="2" fill="rgba(255,255,255,0.4)"/>
+    <rect x="16" y="24" width="6" height="20" rx="2" fill="rgba(255,255,255,0.6)"/>
+    <rect x="24" y="18" width="6" height="26" rx="2" fill="rgba(255,255,255,0.8)"/>
+    <rect x="32" y="12" width="6" height="32" rx="2" fill="white"/>
+    <rect x="40" y="8" width="6" height="36" rx="2" fill="white"/>
+    <circle cx="38" cy="8" r="4" fill="#a78bfa"/>
+   </svg>
+   <div class="ob-wm">Trend<span>Palette</span></div>
+   <div class="ob-tagline">AI-powered growth intelligence for creators & businesses</div>
+  </div>
+  <div class="ob-card">
+   <div class="ob-head">
+    <div class="ob-sn" id="ob-sn">Step 01 — 05</div>
+    <div class="ob-ht" id="ob-ht">Welcome. Let's build your profile.</div>
+    <div class="ob-hs" id="ob-hs">Everything adapts to who you are and what you do.</div>
+   </div>
+   <div class="ob-body" id="ob-body"></div>
+   <div class="ob-foot">
+    <div class="ob-dots" id="ob-dots"></div>
+    <div style="display:flex;gap:8px">
+     <button class="btn btn-ghost btn-sm" id="ob-back" onclick="obBack()" style="display:none">← Back</button>
+     <button class="btn btn-primary" id="ob-next" onclick="obNext()">Continue →</button>
+    </div>
+   </div>
+  </div>
+  <div class="ob-guest-bar">
+   <button class="btn btn-ghost btn-sm" onclick="guestLogin('creator')" style="font-size:.75rem">Browse as Freelance Artist</button>
+   <button class="btn btn-ghost btn-sm" onclick="guestLogin('marketer')" style="font-size:.75rem">Browse as Marketer</button>
+   <button class="btn btn-ghost btn-sm" onclick="guestLogin('business')" style="font-size:.75rem">Browse as Small Business</button>
+   <button class="btn btn-ghost btn-sm" onclick="guestLogin('dev')" style="font-size:.75rem;border-color:var(--accent);color:var(--accent)">🛠 Dev Login</button>
+  </div>
+ </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     MAIN APP
+══════════════════════════════════════════ -->
+<div class="shell" id="app" style="display:none">
+ <!-- TOPBAR -->
+ <header class="topbar">
+  <div class="tp-logo" onclick="navSection('dashboard',document.querySelector('[data-section=dashboard]'))">
+   <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="26" height="26" rx="7" fill="url(#tpg)"/>
+    <defs><linearGradient id="tpg" x1="0" y1="0" x2="26" y2="26"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#2563eb"/></linearGradient></defs>
+    <rect x="4" y="18" width="3" height="5" rx="1" fill="rgba(255,255,255,.45)"/>
+    <rect x="8" y="14" width="3" height="9" rx="1" fill="rgba(255,255,255,.65)"/>
+    <rect x="12" y="10" width="3" height="13" rx="1" fill="rgba(255,255,255,.85)"/>
+    <rect x="16" y="6" width="3" height="17" rx="1" fill="white"/>
+    <rect x="20" y="3" width="3" height="20" rx="1" fill="white"/>
+    <circle cx="19.5" cy="3" r="2" fill="#a78bfa"/>
+   </svg>
+  </div>
+  <div class="tp-brand" onclick="navSection('dashboard',document.querySelector('[data-section=dashboard]'))">
+   <div class="brand-name">Trend<span>Palette</span></div>
+  </div>
+  <!-- Page breadcrumb -->
+  <div class="tp-pagetitle" id="tp-breadcrumb">
+   <span class="tp-page">Dashboard</span>
+  </div>
+  <div class="tp-search">
+   <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="6" r="4"/><path d="M10 10l2.5 2.5"/></svg>
+   <input placeholder="Search trends, jobs, clients…" id="global-search" oninput="globalSearch(this.value)">
+  </div>
+  <div class="tp-right">
+   <!-- Theme only (no accent row in topbar - too cluttered) -->
+   <div class="theme-row">
+    <div class="th-dot" style="background:linear-gradient(135deg,#7c3aed,#2563eb)" data-t="aurora" onclick="setTheme('aurora')" title="Aurora"></div>
+    <div class="th-dot" style="background:linear-gradient(135deg,#ea580c,#dc2626)" data-t="sunset" onclick="setTheme('sunset')" title="Sunset"></div>
+    <div class="th-dot" style="background:linear-gradient(135deg,#0891b2,#0d9488)" data-t="ocean" onclick="setTheme('ocean')" title="Ocean"></div>
+    <div class="th-dot" style="background:linear-gradient(135deg,#16a34a,#059669)" data-t="forest" onclick="setTheme('forest')" title="Forest"></div>
+    <div class="th-dot" style="background:linear-gradient(135deg,#a855f7,#e879f9)" data-t="lavender" onclick="setTheme('lavender')" title="Lavender"></div>
+   </div>
+   <span class="plan-badge" id="plan-badge" onclick="showPlans()" style="cursor:pointer" title="Click to upgrade">Free</span>
+   <!-- Avatar goes to PROFILE, not chat -->
+   <div class="tp-avatar" id="hdr-av" onclick="navSection('profile',document.querySelector('[data-section=profile]'))" title="My Profile">U</div>
+  </div>
+ </header>
+
+ <!-- SECTION RAIL -->
+ <nav class="section-rail" id="section-rail">
+  <!-- Dashboard -->
+  <div class="rail-btn active" data-section="dashboard" onclick="navSection('dashboard',this)" title="Dashboard">
+   <svg viewBox="0 0 20 20" fill="currentColor"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg>
+   <span class="rail-tip">Dashboard</span>
+  </div>
+  <!-- Marketing / Analytics -->
+  <div class="rail-btn" data-section="marketing" onclick="navSection('marketing',this)" title="Marketing">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,14 6,9 10,11 14,5 18,7"/><polyline points="14,5 18,5 18,9"/></svg>
+   <span class="rail-tip">Marketing</span>
+  </div>
+  <!-- Content & AI -->
+  <div class="rail-btn" data-section="content" onclick="navSection('content',this)" title="Content & AI">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="3" y="2" width="14" height="18" rx="2"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>
+   <span class="rail-tip">Content & AI</span>
+  </div>
+  <!-- Business -->
+  <div class="rail-btn" data-section="business" onclick="navSection('business',this)" title="Business">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="7" width="16" height="11" rx="1.5"/><path d="M7 7V5a3 3 0 016 0v2"/><line x1="2" y1="12" x2="18" y2="12"/></svg>
+   <span class="rail-tip">Business</span>
+  </div>
+  <!-- Learn -->
+  <div class="rail-btn" data-section="learn" onclick="navSection('learn',this)" title="Learn & Grow">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 4l8-2 8 2v5c0 4.5-3.5 8-8 10C5.5 17 2 13.5 2 9V4z"/><path d="M10 8v4M10 13.5v.5"/></svg>
+   <span class="rail-tip">Learn & Grow</span>
+  </div>
+  <!-- Website -->
+  <div class="rail-btn" data-section="website" onclick="navSection('website',this)" title="My Website">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 2a14 14 0 010 16M2 10h16"/><path d="M3.5 6h13M3.5 14h13"/></svg>
+   <span class="rail-tip">My Website</span>
+  </div>
+  <div class="rail-divider"></div>
+  <!-- Profile — bottom -->
+  <div class="rail-btn rail-bottom" data-section="profile" onclick="navSection('profile',this)" title="Profile & Portfolio">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="7" r="3.5"/><path d="M3 18c0-3.9 3.1-7 7-7s7 3.1 7 7"/></svg>
+   <span class="rail-tip">Profile & Portfolio</span>
+  </div>
+  <!-- Settings -->
+  <div class="rail-btn" data-section="settings" onclick="navSection('settings',this)" title="Settings">
+   <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.2 4.2l1.4 1.4M14.4 14.4l1.4 1.4M4.2 15.8l1.4-1.4M14.4 5.6l1.4-1.4"/></svg>
+   <span class="rail-tip">Settings</span>
+  </div>
+ </nav>
+
+ <!-- SIDEBAR (floating overlay) -->
+ <div id="sb-backdrop" onclick="closeSidebar()"></div>
+ <nav class="sidebar" id="sidebar"></nav>
+
+ <!-- CHAT FAB (floating, bottom right) -->
+ <button class="chat-fab" onclick="openChatFAB()" title="AI Assistant">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 2H4a2 2 0 00-2 2v12a2 2 0 002 2h3l3 4 3-4h5a2 2 0 002-2V4a2 2 0 00-2-2zM7 9h10M7 13h7"/></svg>
+ </button>
+
+ <!-- MAIN -->
+ <main class="main" id="main-content">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="page active" id="page-dashboard">
+   <div class="ph">
+    <div>
+     <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-bottom:4px">Good <span id="dash-greet">morning</span>, <span id="dash-fn">there</span></div>
+     <div class="ph-t" style="font-size:2.4rem">Dashboard</div>
+    </div>
+    <div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="refreshDash()">↺ Refresh</button></div>
+   </div>
+   <div class="kpi-grid">
+    <div class="kpi"><div class="kpi-lbl">Total Reach</div><div class="kpi-val">48.2K</div><div class="kpi-d">↑ 18% this week</div></div>
+    <div class="kpi"><div class="kpi-lbl">Client Leads</div><div class="kpi-val" id="k-leads">7</div><div class="kpi-d">↑ live scanning</div></div>
+    <div class="kpi"><div class="kpi-lbl">Clients Tracked</div><div class="kpi-val" id="k-clients">0</div><div class="kpi-d">in your CRM</div></div>
+    <div class="kpi"><div class="kpi-lbl">Scheduled Posts</div><div class="kpi-val" id="k-sched">0</div><div class="kpi-d">this month</div></div>
+   </div>
+   <div class="dash-grid">
+    <div style="display:flex;flex-direction:column;gap:16px">
+     <div class="card">
+      <div class="card-head"><div class="card-title">Trending Now <span class="chip">Live</span></div><button class="btn btn-ghost btn-xs" onclick="navSection('marketing')">See all</button></div>
+      <div style="padding:10px;display:flex;flex-direction:column;gap:5px" id="dash-trends"></div>
+     </div>
+     <div class="card">
+      <div class="card-head"><div class="card-title">This Week</div></div>
+      <div style="padding:14px 16px">
+       <div class="chart-bars" id="dash-chart"></div>
+       <div style="display:flex;justify-content:space-between;margin-top:7px;font-size:.7rem;color:var(--text3)"><span>Total: <strong style="color:var(--text)">48,218</strong></span><span style="color:var(--accent)">↑ Best day: Sunday</span></div>
+      </div>
+     </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:16px">
+     <div class="card">
+      <div class="card-head"><div class="card-title">Quick Generate <span class="chip">AI</span></div><button class="btn btn-ghost btn-xs" onclick="navSection('content')">Full editor</button></div>
+      <div style="padding:12px;display:flex;flex-direction:column;gap:8px">
+       <textarea class="textarea" id="dq-input" rows="2" placeholder="Describe your post…" style="min-height:52px"></textarea>
+       <button class="btn btn-primary btn-full btn-sm" onclick="quickGen()" id="dq-btn">Generate Caption</button>
+       <div id="dq-out" style="display:none;flex-direction:column;gap:7px">
+        <div class="label">Caption</div>
+        <div id="dq-cap" style="font-style:italic;font-size:.88rem;line-height:1.6;padding:9px;background:var(--surface2);border-radius:7px;border:1px solid var(--border)"></div>
+        <div id="dq-tags" style="display:flex;flex-wrap:wrap;gap:4px"></div>
+        <div style="display:flex;gap:6px"><button class="btn btn-outline btn-xs" style="flex:1" onclick="showPublish()">Publish</button><button class="btn btn-ghost btn-xs" onclick="copyEl('dq-cap')">Copy</button></div>
+       </div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="card-head"><div class="card-title">AI Insights</div></div>
+      <div style="padding:10px;display:flex;flex-direction:column;gap:6px" id="dash-insights"></div>
+     </div>
+     <div class="card">
+      <div class="card-head"><div class="card-title">Quick Actions</div></div>
+      <div style="padding:10px;display:flex;flex-direction:column;gap:5px">
+       <button class="btn btn-ghost btn-full btn-sm" style="justify-content:flex-start" onclick="navSection('marketing')">View Live Trends</button>
+       <button class="btn btn-ghost btn-full btn-sm" style="justify-content:flex-start" onclick="navSection('business','jobs')">Search Reddit Jobs</button>
+       <button class="btn btn-ghost btn-full btn-sm" style="justify-content:flex-start" onclick="navSection('content','schedule')">Open Calendar</button>
+       <button class="btn btn-ghost btn-full btn-sm" style="justify-content:flex-start" onclick="navSection('learn')">Browse Learn Articles</button>
+       <button class="btn btn-ghost btn-full btn-sm" style="justify-content:flex-start" onclick="exportResume()">Export Portfolio PDF</button>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ══ MARKETING: Trends ══ -->
+  <div class="page" id="page-trends">
+   <div class="ph">
+    <div><div class="ph-t">Live Trend Radar</div><div class="ph-s" id="trends-sub">Real-time signals personalized to your interests</div></div>
+    <div class="ph-r">
+     <input class="input" id="trend-q" placeholder="Research any community…" style="width:220px" onkeydown="if(event.key==='Enter')aiTrends()">
+     <button class="btn btn-primary btn-sm" onclick="aiTrends()" id="trend-btn">Research Now</button>
+    </div>
+   </div>
+   <!-- Popular Posts -->
+   <div class="card">
+    <div class="card-head">
+     <div class="card-title">Most Popular Posts Right Now <span class="chip">AI + Web</span></div>
+     <button class="btn btn-ghost btn-xs" onclick="loadPopularPosts()" id="pop-btn">Load Live Posts</button>
+    </div>
+    <div style="padding:12px" id="pop-posts-container">
+     <div style="text-align:center;padding:20px;color:var(--text3);font-style:italic">Click "Load Live Posts" to fetch trending content from Instagram, TikTok & Twitter relevant to your industries.</div>
+    </div>
+   </div>
+   <!-- Trend research output -->
+   <div class="card" id="trend-research-card" style="display:none">
+    <div class="card-head"><div class="card-title">Deep Research Results <span class="chip">Live</span></div><button class="btn btn-ghost btn-xs" onclick="this.closest('.card').style.display='none'">Close</button></div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px" id="trend-research-body"></div>
+   </div>
+  </div>
+
+  <!-- ══ MARKETING: Leads ══ -->
+  <div class="page" id="page-leads">
+   <div class="ph">
+    <div><div class="ph-t">Lead Finder</div><div class="ph-s">Live Reddit opportunities matching your profile</div></div>
+    <div class="ph-r"><button class="btn btn-primary btn-sm" onclick="loadLeads()">Scan Now</button></div>
+   </div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card"><div class="card-head"><div class="card-title">r/forhire <span class="chip">Live</span></div><a href="https://reddit.com/r/forhire" target="_blank" style="font-size:.72rem;color:var(--accent)">Open Reddit ↗</a></div><div style="padding:10px;display:flex;flex-direction:column;gap:7px" id="leads-r1"></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">r/HireaFreelancer <span class="chip">Live</span></div><a href="https://reddit.com/r/HireaFreelancer" target="_blank" style="font-size:.72rem;color:var(--accent)">Open Reddit ↗</a></div><div style="padding:10px;display:flex;flex-direction:column;gap:7px" id="leads-r2"></div></div>
+   </div>
+  </div>
+
+  <!-- ══ CONTENT: AI Generator ══ -->
+  <div class="page" id="page-generator">
+   <div class="ph"><div><div class="ph-t">AI Content Generator</div><div class="ph-s">Upload your work or describe your idea — get a caption guaranteed to perform</div></div></div>
+   <div style="display:grid;grid-template-columns:1fr 320px;gap:18px">
+    <div class="card">
+     <div class="card-head"><div class="card-title">Content Studio <span class="chip">AI + Vision</span></div></div>
+     <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
+      <!-- Image upload -->
+      <div class="field">
+       <div class="fl">Upload Your Work (optional — AI analyzes it)</div>
+       <div class="upload-zone" id="upload-zone" onclick="document.getElementById('gen-file').click()" ondrop="handleDrop(event)" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')">
+        <input type="file" id="gen-file" accept="image/*" onchange="handleFileSelect(this)">
+        <div id="upload-placeholder">
+         <div style="font-size:1.8rem;margin-bottom:8px">◈</div>
+         <div style="font-size:.85rem;font-weight:500;color:var(--text2)">Drop your artwork here, or click to browse</div>
+         <div style="font-size:.72rem;color:var(--text3);margin-top:4px">PNG, JPG, GIF up to 10MB</div>
+        </div>
+        <div id="upload-preview-wrap" style="display:none">
+         <div class="upload-preview">
+          <img id="upload-img" src="" alt="">
+          <button class="upload-clear" onclick="event.stopPropagation();clearUpload()">✕</button>
+         </div>
+         <div style="margin-top:6px;font-size:.75rem;color:var(--text2)" id="upload-name"></div>
+        </div>
+       </div>
+      </div>
+      <div class="field"><div class="fl">Concept / Description (optional)</div><textarea class="textarea" id="gen-input" rows="3" placeholder="e.g. 'A furry character study in warm colors' or 'My new logo design for a bakery' — the AI will analyze your image AND this description"></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px">
+       <div class="field"><div class="fl">Platform</div><select class="input" id="gen-plat"><option>Instagram Post</option><option>Twitter/X Thread</option><option>YouTube Title</option><option>LinkedIn Post</option><option>TikTok Caption</option></select></div>
+       <div class="field"><div class="fl">Goal</div><select class="input" id="gen-goal"><option>Get new clients</option><option>Build authority</option><option>Grow followers</option><option>Showcase work</option><option>Drive sales</option></select></div>
+       <div class="field"><div class="fl">Tone</div><select class="input" id="gen-tone"><option>Confident</option><option>Playful</option><option>Professional</option><option>Raw & Honest</option><option>Inspirational</option></select></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="runGen()" id="gen-btn">✦ Generate Optimized Caption</button>
+      <div id="gen-out" style="display:none;flex-direction:column;gap:10px">
+       <div class="label">AI-Generated Caption</div>
+       <div id="gen-caption" style="font-style:italic;font-size:1rem;line-height:1.65;padding:14px;background:var(--surface2);border-radius:9px;border:1px solid var(--border)"></div>
+       <div id="gen-tags" style="display:flex;flex-wrap:wrap;gap:5px"></div>
+       <div id="gen-tips" style="font-size:.8rem;color:var(--text2);background:var(--ad);border:1px solid var(--ag);border-radius:8px;padding:10px;line-height:1.5"></div>
+       <div style="display:flex;gap:8px">
+        <button class="btn btn-primary btn-sm" style="flex:1" onclick="showPublish()">Publish Now</button>
+        <button class="btn btn-ghost btn-sm" onclick="copyEl('gen-caption')">Copy</button>
+        <button class="btn btn-ghost btn-sm" onclick="addToCalendar()">Add to Calendar</button>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+     <div class="card"><div class="card-head"><div class="card-title">Trending Topics</div></div><div style="padding:10px;display:flex;flex-direction:column;gap:5px" id="gen-topics"></div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Recent Generations</div></div><div style="padding:10px;display:flex;flex-direction:column;gap:5px;max-height:200px;overflow-y:auto" id="gen-hist"></div></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ══ CONTENT: Calendar ══ -->
+  <div class="page" id="page-schedule">
+   <div class="ph"><div><div class="ph-t">Content Calendar</div><div class="ph-s">See every scheduled post at a glance — click any day to add</div></div><div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="calPrev()">←</button><button class="btn btn-ghost btn-sm" onclick="calNext()">→</button><button class="btn btn-primary btn-sm" onclick="showAddPost()">+ Add Post</button></div></div>
+   <div class="card">
+    <div style="padding:14px 16px">
+     <div class="cal-nav"><div class="cal-month" id="cal-month-lbl"></div></div>
+     <div class="cal-grid" id="cal-grid"></div>
+    </div>
+   </div>
+   <div class="card">
+    <div class="card-head"><div class="card-title">Upcoming Posts</div></div>
+    <div style="padding:10px;display:flex;flex-direction:column;gap:5px" id="upcoming-posts"></div>
+   </div>
+  </div>
+
+  <!-- ══ BUSINESS: Jobs ══ -->
+  <div class="page" id="page-jobs">
+   <div class="ph"><div><div class="ph-t">Job Finder</div><div class="ph-s">Live Reddit opportunities filtered to your budget & skills</div></div></div>
+   <div class="card" style="margin-bottom:4px">
+    <div class="card-head"><div class="card-title">Search Filters</div></div>
+    <div style="padding:13px;display:grid;grid-template-columns:1fr 80px 80px 160px auto;gap:9px;align-items:flex-end">
+     <div class="field"><div class="fl">Keywords</div><input class="input" id="job-kw" placeholder="e.g. digital art, social media, logo design"></div>
+     <div class="field"><div class="fl">Min $</div><input class="input" id="job-min" type="number" value="50"></div>
+     <div class="field"><div class="fl">Max $</div><input class="input" id="job-max" type="number" value="500"></div>
+     <div class="field"><div class="fl">Subreddit</div><select class="input" id="job-sub">
+      <option value="forhire">r/forhire</option><option value="HireaFreelancer">r/HireaFreelancer</option>
+      <option value="artcommissions">r/artcommissions</option><option value="freelance">r/freelance</option>
+      <option value="digital_marketing">r/digital_marketing</option><option value="smallbusiness">r/smallbusiness</option>
+      <option value="slavelabour">r/slavelabour</option><option value="WorkOnline">r/WorkOnline</option>
+     </select></div>
+     <button class="btn btn-primary btn-sm" onclick="jobSearch()" id="job-btn">Search Reddit</button>
+    </div>
+   </div>
+   <div id="job-results"><div style="padding:24px;text-align:center;color:var(--text3);font-style:italic">Enter filters and search to find live Reddit job posts.</div></div>
+  </div>
+
+  <!-- ══ BUSINESS: Clients CRM ══ -->
+  <div class="page" id="page-clients">
+   <div class="ph"><div><div class="ph-t">Client Manager</div><div class="ph-s">Track every client, order, and product in one place</div></div><div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="exportClientsCSV()">Export CSV</button><button class="btn btn-primary btn-sm" onclick="showAddClient()">+ Add Client</button></div></div>
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="kpi"><div class="kpi-lbl">Total Clients</div><div class="kpi-val" id="crm-tot">0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Active</div><div class="kpi-val" id="crm-act">0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Total Revenue</div><div class="kpi-val" id="crm-rev">$0</div></div>
+    <div class="kpi"><div class="kpi-lbl">Avg Order</div><div class="kpi-val" id="crm-avg">$0</div></div>
+   </div>
+   <div class="card">
+    <div class="card-head">
+     <div class="card-title">Client List</div>
+     <div style="display:flex;gap:8px;align-items:center">
+      <input class="input" placeholder="Search…" style="width:180px" oninput="filterClients(this.value)">
+      <select class="input" style="width:140px" onchange="sortClients(this.value)"><option value="">Sort by…</option><option value="name">Name</option><option value="value">Revenue</option><option value="status">Status</option></select>
+     </div>
+    </div>
+    <div style="overflow-x:auto">
+     <table class="excel-table" id="crm-table">
+      <thead><tr>
+       <th>Name</th><th>Username</th><th>Email</th><th>Phone</th><th>Address</th>
+       <th>Products Bought</th><th>Total Value</th><th>Status</th><th>Newsletter</th><th>Notes</th><th>Actions</th>
+      </tr></thead>
+      <tbody id="crm-tb"></tbody>
+     </table>
+    </div>
+   </div>
+   <!-- Best sellers -->
+   <div class="card">
+    <div class="card-head"><div class="card-title">Best-Selling Products / Services</div><button class="btn btn-ghost btn-xs" onclick="showAddProduct()">+ Add Product</button></div>
+    <div style="padding:14px;display:flex;flex-direction:column;gap:6px" id="best-sellers"></div>
+   </div>
+  </div>
+
+  <!-- ══ BUSINESS: Newsletter ══ -->
+  <div class="page" id="page-newsletter">
+   <div class="ph"><div><div class="ph-t">Newsletter</div><div class="ph-s">Email campaigns to your subscribed clients</div></div><div class="ph-r"><button class="btn btn-primary btn-sm" onclick="showCompose()">Compose Campaign</button></div></div>
+   <div style="display:grid;grid-template-columns:1fr 280px;gap:16px">
+    <div class="card"><div class="card-head"><div class="card-title">Campaign History</div></div><div style="padding:12px;display:flex;flex-direction:column;gap:6px" id="nl-hist"><div style="text-align:center;padding:20px;color:var(--text3);font-style:italic">No campaigns sent yet.</div></div></div>
+    <div class="card"><div class="card-head"><div class="card-title">List Stats</div></div><div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+     <div class="kpi" style="border:none;padding:0"><div class="kpi-lbl">Subscribers</div><div class="kpi-val" id="nl-subs">0</div></div>
+     <div class="div"></div>
+     <button class="btn btn-ghost btn-full btn-sm" onclick="showCompose()">Weekly Update</button>
+     <button class="btn btn-ghost btn-full btn-sm" onclick="aiDraftNL()">AI Draft Newsletter</button>
+    </div></div>
+   </div>
+  </div>
+
+  <!-- ══ LEARN ══ -->
+  <div class="page" id="page-learn">
+   <div class="ph"><div><div class="ph-t">Learn & Grow</div><div class="ph-s">Marketing techniques, platform guides, and expert strategies</div></div><div class="ph-r"><span class="chip-grad">Premium: Unlock All</span></div></div>
+   <!-- Hero -->
+   <div class="learn-hero">
+    <div style="max-width:500px">
+     <div class="label" style="color:rgba(255,255,255,.6);margin-bottom:8px">Featured Article</div>
+     <div style="font-family:'DM Serif Display',serif;font-size:1.6rem;line-height:1.2;margin-bottom:10px">The Rule of Thirds: Why the most viral posts all share this composition secret</div>
+     <p style="font-size:.88rem;color:rgba(255,255,255,.75);line-height:1.6;margin-bottom:16px">Used by photographers, filmmakers, and now the most-followed creators on Instagram — here's how to apply it to your next post.</p>
+     <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);backdrop-filter:blur(4px)" onclick="openArticle('rule-of-thirds')">Read Article →</button>
+    </div>
+   </div>
+   <!-- Sponsored -->
+   <div class="card ad-card">
+    <div class="ad-badge">Sponsored</div>
+    <div style="padding:18px;display:flex;align-items:center;gap:16px">
+     <div style="width:60px;height:60px;border-radius:12px;background:linear-gradient(135deg,#f97316,#ea580c);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex-shrink:0">🫧</div>
+     <div style="flex:1">
+      <div style="font-weight:700;font-size:1rem;margin-bottom:4px">Redbubble for Artists</div>
+      <div style="font-size:.85rem;color:var(--text2);line-height:1.5">Turn your art into passive income. Upload once, sell everywhere — stickers, shirts, phone cases and more. Trusted by 800K+ artists worldwide.</div>
+     </div>
+     <a href="https://redbubble.com" target="_blank" class="btn btn-primary btn-sm" style="flex-shrink:0">Start Selling →</a>
+    </div>
+   </div>
+   <!-- Article grid -->
+   <div class="label">Marketing Techniques</div>
+   <div class="article-grid" id="article-grid"></div>
+   <!-- Popular Posts section -->
+   <div class="label" style="margin-top:4px">Popular Platform Posts — Your Niche</div>
+   <div class="card">
+    <div class="card-head"><div class="card-title">Most Engaging Posts Right Now <span class="chip">AI Research</span></div><button class="btn btn-ghost btn-xs" id="learn-pop-btn" onclick="loadLearnPosts()">Load Posts</button></div>
+    <div style="padding:12px" id="learn-posts">
+     <div style="text-align:center;padding:20px;color:var(--text3);font-style:italic">Click "Load Posts" to see the most engaging content in your niche on Instagram, TikTok & Twitter.</div>
+    </div>
+   </div>
+   <!-- Platform spotlights -->
+   <div class="label">Platform Spotlights</div>
+   <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+    <div class="platform-card" onclick="openPlatformGuide('instagram')"><div class="platform-icon-big">📸</div><div style="font-weight:700">Instagram</div><div style="font-size:.75rem;color:var(--text2)">Reels, Stories, Carousels</div><div style="font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:6px">1.4B+ monthly users</div></div>
+    <div class="platform-card" onclick="openPlatformGuide('tiktok')"><div class="platform-icon-big">🎵</div><div style="font-weight:700">TikTok</div><div style="font-size:.75rem;color:var(--text2)">Short video, trends, sounds</div><div style="font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:6px">1B+ monthly users</div></div>
+    <div class="platform-card" onclick="openPlatformGuide('twitter')"><div class="platform-icon-big">𝕏</div><div style="font-weight:700">Twitter/X</div><div style="font-size:.75rem;color:var(--text2)">Threads, trending, community</div><div style="font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:6px">550M+ monthly users</div></div>
+    <div class="platform-card" onclick="openPlatformGuide('youtube')"><div class="platform-icon-big">▶</div><div style="font-weight:700">YouTube</div><div style="font-size:.75rem;color:var(--text2)">Shorts, long-form, SEO</div><div style="font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin-top:6px">2.7B+ monthly users</div></div>
+   </div>
+   <!-- Another sponsored -->
+   <div class="card ad-card" style="border-color:var(--border)">
+    <div class="ad-badge">Partner</div>
+    <div style="padding:16px;display:flex;align-items:center;gap:14px">
+     <div style="width:50px;height:50px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0">🛒</div>
+     <div><div style="font-weight:600;margin-bottom:3px">Etsy for Creative Entrepreneurs</div><div style="font-size:.82rem;color:var(--text2)">List your art, illustrations, and digital products. Millions of buyers looking for exactly what you create.</div></div>
+     <a href="https://etsy.com" target="_blank" class="btn btn-ghost btn-sm" style="flex-shrink:0">Learn More ↗</a>
+    </div>
+   </div>
+  </div>
+
+  <!-- ══ WEBSITE BUILDER ══ -->
+  <div class="page" id="page-website">
+   <div class="ph"><div><div class="ph-t">My TrendPalette Website</div><div class="ph-s">Your own hosted page — build it, customize it, share it</div></div><div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="previewSite()">Preview</button><button class="btn btn-primary btn-sm" onclick="publishSite()">Publish Site</button></div></div>
+   <!-- URL -->
+   <div class="card">
+    <div class="card-head"><div class="card-title">Your Site URL</div></div>
+    <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+     <div class="site-url-bar">
+      <div class="site-url-prefix">trendpalette.io/</div>
+      <input class="site-url-input" id="site-slug" placeholder="yourname" value="">
+     </div>
+     <div style="font-size:.78rem;color:var(--text2)">Your public portfolio page. Share it with clients, post it in your bio, add it to your resume.</div>
+    </div>
+   </div>
+   <!-- Layout builder -->
+   <div style="display:grid;grid-template-columns:280px 1fr;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+     <div class="card">
+      <div class="card-head"><div class="card-title">Page Sections</div><div style="font-size:.72rem;color:var(--text3)">Drag to reorder</div></div>
+      <div class="site-section-blocks" id="site-blocks">
+       <div class="site-block" draggable="true" data-block="hero"><span class="site-block-drag">⠿</span><div class="site-block-label">Hero / Introduction</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="portfolio"><span class="site-block-drag">⠿</span><div class="site-block-label">Portfolio Gallery</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="services"><span class="site-block-drag">⠿</span><div class="site-block-label">Services / Products</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="about"><span class="site-block-drag">⠿</span><div class="site-block-label">About / Bio</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="contact"><span class="site-block-drag">⠿</span><div class="site-block-label">Contact Form</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="shop"><span class="site-block-drag">⠿</span><div class="site-block-label">Shop / Buy Now</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-orange" style="font-size:.58rem">Hidden</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+       <div class="site-block" draggable="true" data-block="feedback"><span class="site-block-drag">⠿</span><div class="site-block-label">Client Feedback Form</div><div style="display:flex;gap:5px;align-items:center"><span class="bdg bdg-green" style="font-size:.58rem">Visible</span><button class="btn-icon btn-xs" onclick="toggleBlock(this)">👁</button></div></div>
+      </div>
+     </div>
+     <div class="card">
+      <div class="card-head"><div class="card-title">Custom HTML</div></div>
+      <div style="padding:12px">
+       <textarea class="textarea" id="custom-html" rows="8" placeholder="Add custom HTML — advanced users only…" style="font-family:'JetBrains Mono',monospace;font-size:.72rem"></textarea>
+       <button class="btn btn-ghost btn-sm btn-full" style="margin-top:8px" onclick="insertCustomHTML()">Apply HTML</button>
+      </div>
+     </div>
+    </div>
+    <!-- Live preview -->
+    <div class="site-preview">
+     <div class="site-preview-bar">
+      <div class="site-dots"><div class="site-dot" style="background:#ef4444"></div><div class="site-dot" style="background:#f59e0b"></div><div class="site-dot" style="background:#10b981"></div></div>
+      <div style="flex:1;background:var(--bg2);border-radius:4px;padding:3px 10px;font-size:.68rem;color:var(--text3);font-family:'JetBrains Mono',monospace;margin:0 8px" id="preview-url-bar">trendpalette.io/yourname</div>
+      <button class="btn btn-ghost btn-xs" onclick="previewSite()">Open ↗</button>
+     </div>
+     <iframe id="site-preview-frame" style="width:100%;height:calc(100% - 40px);border:none;background:#fff" srcdoc="<div style='padding:40px;text-align:center;font-family:sans-serif;color:#888'>Click Publish Site to see your preview here</div>"></iframe>
+    </div>
+   </div>
+  </div>
+
+  <!-- ══ CHATBOT ══ -->
+  <div class="page chat-page" id="page-chatbot" style="padding:0;gap:0">
+   <div style="padding:14px 18px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;justify-content:space-between;align-items:center">
+    <div><div style="font-weight:600">AI Assistant</div><div style="font-size:.78rem;color:var(--text2);margin-top:1px">Knows your full profile · searches the web live</div></div>
+    <button class="btn btn-ghost btn-sm" onclick="clearChat()">Clear</button>
+   </div>
+   <div style="display:flex;gap:7px;padding:10px 16px 0;flex-wrap:wrap">
+    <button class="tag" onclick="chatQ('Give me 10 trending posts from my niche with real examples')">My niche trends</button>
+    <button class="tag" onclick="chatQ('Find me commission posts on Reddit matching my budget')">Reddit jobs</button>
+    <button class="tag" onclick="chatQ('Generate a storyboard for a viral post in my industry')">Storyboard</button>
+    <button class="tag" onclick="chatQ('Summarize my clients and suggest follow-ups')">Client summary</button>
+    <button class="tag" onclick="chatQ('What marketing technique would work best for me this week?')">Marketing tip</button>
+   </div>
+   <div class="chat-msgs" id="chat-msgs"></div>
+   <div class="chat-input-area">
+    <textarea class="chat-input" id="chat-in" rows="1" placeholder="Ask anything — searches the web live…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}" oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,100)+'px'"></textarea>
+    <button class="btn btn-primary btn-sm" onclick="sendChat()" id="chat-btn">Send</button>
+   </div>
+  </div>
+
+  <!-- ══ PROFILE ══ -->
+  <div class="page" id="page-profile">
+   <div class="ph"><div><div class="ph-t">My Profile & Portfolio</div><div class="ph-s">Your professional identity — export as a beautiful PDF</div></div><div class="ph-r"><button class="btn btn-ghost btn-sm" onclick="previewResume()">Preview PDF</button><button class="btn btn-primary btn-sm" onclick="exportResume()">Export Portfolio PDF</button></div></div>
+   <div style="display:grid;grid-template-columns:300px 1fr;gap:18px">
+    <div style="display:flex;flex-direction:column;gap:14px">
+     <div class="card"><div class="card-head"><div class="card-title">Personal Info</div></div><div style="padding:14px;display:flex;flex-direction:column;gap:9px">
+      <div class="field"><div class="fl">Full Name</div><input class="input" id="p-name"></div>
+      <div class="field"><div class="fl">Title / Role</div><input class="input" id="p-role"></div>
+      <div class="field"><div class="fl">Email</div><input class="input" id="p-email" type="email"></div>
+      <div class="field"><div class="fl">Phone</div><input class="input" id="p-phone" placeholder="+1 (555) 000-0000"></div>
+      <div class="field"><div class="fl">Website</div><input class="input" id="p-url" placeholder="https://yoursite.com"></div>
+      <div class="field"><div class="fl">Location</div><input class="input" id="p-loc" placeholder="City, State"></div>
+      <button class="btn btn-primary btn-full btn-sm" onclick="saveProfile()">Save Info</button>
+     </div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Professional Bio</div></div><div style="padding:12px"><textarea class="textarea" id="p-bio" rows="5" placeholder="A compelling 2-3 sentence bio for potential clients…"></textarea></div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Products & Services Offered</div></div><div style="padding:12px;display:flex;flex-direction:column;gap:8px">
+      <div class="fl">List what you sell/offer — the AI uses this to tailor every response</div>
+      <textarea class="textarea" id="p-products" rows="4" placeholder="e.g. Character commissions ($50-$300), Logo design ($200-$800), Brand identity packages ($500+), Monthly social media management ($300/mo)…"></textarea>
+     </div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Custom Signature</div></div><div style="padding:12px;display:flex;flex-direction:column;gap:7px">
+      <textarea class="textarea" id="p-sig" rows="4" oninput="document.getElementById('sig-prev').textContent=this.value"></textarea>
+      <div class="label">Preview</div>
+      <div id="sig-prev" style="padding:9px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);font-size:.8rem;white-space:pre-line;color:var(--text2)"></div>
+     </div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Ideal Job Criteria</div></div><div style="padding:12px;display:flex;flex-direction:column;gap:8px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+       <div class="field"><div class="fl">Min Budget ($)</div><input class="input" id="p-min" type="number" value="50"></div>
+       <div class="field"><div class="fl">Max Budget ($)</div><input class="input" id="p-max" type="number" value="1000"></div>
+      </div>
+      <div class="field"><div class="fl">Work Type</div><select class="input" id="p-wtype"><option>Commission</option><option>Freelance</option><option>Retainer</option><option>Full-time</option></select></div>
+      <div class="field"><div class="fl">Skills & Keywords</div><input class="input" id="p-skills" placeholder="digital art, illustration, social media…"></div>
+      <div class="field"><div class="fl">Availability</div><select class="input" id="p-avail"><option>Available Now</option><option>Available in 2 weeks</option><option>Booked — waitlist only</option></select></div>
+     </div></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px">
+     <div class="card"><div class="card-head"><div class="card-title">Portfolio Work</div><button class="btn btn-primary btn-sm" onclick="showAddPort()">+ Add Work</button></div><div style="padding:14px"><div class="port-grid" id="port-grid"></div></div></div>
+     <div class="card"><div class="card-head"><div class="card-title">Resume / Skills</div></div><div style="padding:14px;display:flex;flex-direction:column;gap:9px">
+      <div class="field"><div class="fl">Top Skills</div><input class="input" id="p-top-skills" placeholder="Digital Illustration, Brand Design, Social Media…"></div>
+      <div class="field"><div class="fl">Tools & Software</div><input class="input" id="p-tools" placeholder="Procreate, Adobe Suite, Canva, Figma…"></div>
+      <div class="field"><div class="fl">Experience Highlights</div><textarea class="textarea" id="p-exp" rows="5" placeholder="• X years freelancing&#10;• Y completed commissions&#10;• Notable clients or projects…"></textarea></div>
+      <div class="field"><div class="fl">Education / Certifications</div><textarea class="textarea" id="p-edu" rows="3" placeholder="• Degree or self-taught&#10;• Relevant courses…"></textarea></div>
+      <div class="field"><div class="fl">Social / Portfolio Links</div><textarea class="textarea" id="p-links" rows="3" placeholder="Twitter: @handle&#10;Instagram: @handle&#10;ArtStation, FurAffinity, etc."></textarea></div>
+     </div></div>
+    </div>
+   </div>
+  </div>
+
+  <!-- ══ SETTINGS ══ -->
+  <div class="page" id="page-settings">
+   <div class="ph"><div><div class="ph-t">Settings</div><div class="ph-s">Account, appearance, and preferences</div></div></div>
+   <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+    <div class="card"><div class="card-head"><div class="card-title">Account</div></div><div style="padding:14px;display:flex;flex-direction:column;gap:10px">
+     <div class="field"><div class="fl">Name</div><input class="input" id="s-name"></div>
+     <div class="field"><div class="fl">Email</div><input class="input" id="s-email" type="email"></div>
+     <div class="field"><div class="fl">Plan</div><select class="input"><option>Free</option><option>Pro ($12/mo)</option><option>Business ($29/mo)</option></select></div>
+     <button class="btn btn-primary btn-sm" onclick="saveSettings()">Save</button>
+    </div></div>
+    <div class="card"><div class="card-head"><div class="card-title">Appearance</div></div><div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+     <div class="field"><div class="fl">Theme</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+       <div class="color-swatch" style="background:linear-gradient(135deg,#7c3aed,#2563eb)" data-t="aurora" onclick="setTheme('aurora')" title="Aurora"></div>
+       <div class="color-swatch" style="background:linear-gradient(135deg,#ea580c,#dc2626)" data-t="sunset" onclick="setTheme('sunset')" title="Sunset"></div>
+       <div class="color-swatch" style="background:linear-gradient(135deg,#0891b2,#0d9488)" data-t="ocean" onclick="setTheme('ocean')" title="Ocean"></div>
+       <div class="color-swatch" style="background:linear-gradient(135deg,#16a34a,#059669)" data-t="forest" onclick="setTheme('forest')" title="Forest"></div>
+       <div class="color-swatch" style="background:linear-gradient(135deg,#a855f7,#e879f9)" data-t="lavender" onclick="setTheme('lavender')" title="Lavender"></div>
+      </div>
+     </div>
+     <div class="field"><div class="fl">Accent Color</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap">
+       <div class="color-swatch" style="background:#8b5cf6;border-radius:50%" data-a="violet" onclick="setAccent('violet')"></div>
+       <div class="color-swatch" style="background:#f97316;border-radius:50%" data-a="coral" onclick="setAccent('coral')"></div>
+       <div class="color-swatch" style="background:#06b6d4;border-radius:50%" data-a="cyan" onclick="setAccent('cyan')"></div>
+       <div class="color-swatch" style="background:#f43f5e;border-radius:50%" data-a="rose" onclick="setAccent('rose')"></div>
+       <div class="color-swatch" style="background:#10b981;border-radius:50%" data-a="emerald" onclick="setAccent('emerald')"></div>
+       <div class="color-swatch" style="background:#f59e0b;border-radius:50%" data-a="gold" onclick="setAccent('gold')"></div>
+      </div>
+     </div>
+     <div class="field"><div class="fl">Font Style</div>
+      <div style="display:flex;gap:8px">
+       <div class="font-preview sel" onclick="setFont('dm-serif')" id="fp-dm"><div class="font-preview-name">DM Serif</div><div class="font-preview-sample" style="font-family:'DM Serif Display',serif">Creative & Elegant</div></div>
+       <div class="font-preview" onclick="setFont('system')" id="fp-sys"><div class="font-preview-name">Modern</div><div class="font-preview-sample" style="font-family:'DM Sans',sans-serif">Clean & Professional</div></div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+
+ </main>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// GLOBAL STATE
+// ═══════════════════════════════════════════
+const S = {
+  user:{ name:'', firstName:'', role:'Freelance Artist', industries:[], initials:'', email:'', skills:'', minBudget:50, maxBudget:500, products:'', bio:'', tagline:'' },
+  theme:'aurora', accent:'violet', obStep:0,
+  obData:{ name:'', email:'', tagline:'', role:'', industries:[], minBudget:50, maxBudget:500, skills:'' },
+  clients:[], portfolio:[], schedPosts:[], nlCampaigns:[], genHist:[], chatHist:[],
+  products:[], calDate: new Date(), currentSection:'dashboard', currentPage:'dashboard',
+  imageData: null, imageBase64: null,
+};
+
+// ═══════════════════════════════════════════
+// AI API
+// ═══════════════════════════════════════════
+async function callAI(userMsg, systemMsg='You are a helpful assistant.', useWebSearch=false, maxTokens=900){
+  const body = { model:'claude-sonnet-4-20250514', max_tokens:maxTokens, system:systemMsg, messages:[{role:'user',content:userMsg}] };
+  if(useWebSearch) body.tools=[{type:'web_search_20250305',name:'web_search'}];
+  const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error?.message||`API ${r.status}`); }
+  const d = await r.json();
+  return (d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+}
+
+async function callAIWithImage(userMsg, imageBase64, mimeType='image/jpeg', systemMsg='You are a helpful assistant.', maxTokens=900){
+  const body = {
+    model:'claude-sonnet-4-20250514', max_tokens:maxTokens, system:systemMsg,
+    messages:[{role:'user',content:[
+      {type:'image',source:{type:'base64',media_type:mimeType,data:imageBase64}},
+      {type:'text',text:userMsg}
+    ]}]
+  };
+  const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error?.message||`API ${r.status}`); }
+  const d = await r.json();
+  return (d.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+}
+
+async function callAIJSON(userMsg, systemMsg='', useWebSearch=false, maxTokens=1400){
+  const txt = await callAI(userMsg, systemMsg+'\n\nReturn ONLY valid JSON, no markdown, no preamble.', useWebSearch, maxTokens);
+  const start = txt.search(/[\[{]/);
+  if(start===-1) throw new Error('No JSON in response');
+  return JSON.parse(txt.slice(start));
+}
+
+// ═══════════════════════════════════════════
+// REDDIT API
+// ═══════════════════════════════════════════
+async function fetchReddit(sub, q='', sort='new', limit=10){
+  const base='https://www.reddit.com';
+  const url = q ? `${base}/r/${sub}/search.json?q=${encodeURIComponent(q)}&sort=${sort}&restrict_sr=1&limit=${limit}&t=week`
+               : `${base}/r/${sub}/new.json?limit=${limit}`;
+  const r = await fetch(url,{headers:{Accept:'application/json'}});
+  if(!r.ok) throw new Error(`Reddit ${r.status}`);
+  const d = await r.json();
+  return (d.data?.children||[]).map(c=>c.data);
+}
+
+function extractBudget(txt){
+  const patterns=[/\$(\d+)[–\-]?\$?(\d+)/g,/budget[:\s]+\$?(\d+)/gi,/paying\s+\$?(\d+)/gi];
+  for(const p of patterns){ const m=p.exec(txt); if(m) return m[2]?[+m[1],+m[2]]:[+m[1],+m[1]]; }
+  return null;
+}
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function fmtAge(utc){ const m=Math.floor((Date.now()/1000-utc)/60); return m<60?m+'m ago':m<1440?Math.floor(m/60)+'h ago':Math.floor(m/1440)+'d ago'; }
+
+function redditCard(post, outreach=true){
+  const b=extractBudget((post.title||'')+' '+(post.selftext||''));
+  const link=`https://reddit.com${post.permalink}`;
+  return `<div class="lead-card">
+    <div style="font-size:.88rem;font-weight:600;margin-bottom:4px;line-height:1.35">${esc(post.title)}</div>
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:.7rem;color:var(--text3);margin-bottom:8px">
+      <span>↑ ${post.score||0}</span><span>r/${post.subreddit||''}</span><span>${fmtAge(post.created_utc)}</span>
+      ${b?`<span class="bdg bdg-green">$${b[0]}${b[1]!==b[0]?'–$'+b[1]:''}</span>`:''}
+      <a href="${link}" target="_blank" style="margin-left:auto;font-size:.7rem;color:var(--accent)">View on Reddit ↗</a>
+    </div>
+    ${post.selftext&&post.selftext.length>20?`<div style="font-size:.78rem;color:var(--text2);line-height:1.4;margin-bottom:8px">${esc(post.selftext.slice(0,160))}${post.selftext.length>160?'…':''}</div>`:''}
+    ${outreach?`<button class="btn btn-ghost btn-xs" onclick='showOutreach(${JSON.stringify(esc(post.title)).replace(/'/g,"&apos;")},"${link}")'>Draft Outreach</button>`:''}
+  </div>`;
+}
+
+// ═══════════════════════════════════════════
+// THEME / ACCENT
+// ═══════════════════════════════════════════
+function setTheme(t){ S.theme=t; document.documentElement.setAttribute('data-theme',t); document.querySelectorAll('.th-dot,[data-t]').forEach(d=>d.classList.toggle('active',d.dataset.t===t)); document.querySelectorAll('.color-swatch[data-t]').forEach(d=>d.classList.toggle('active',d.dataset.t===t)); }
+function setAccent(a){ S.accent=a; document.documentElement.setAttribute('data-accent',a); document.querySelectorAll('.ac-dot,[data-a]').forEach(d=>d.classList.toggle('active',d.dataset.a===a)); document.querySelectorAll('.color-swatch[data-a]').forEach(d=>d.classList.toggle('active',d.dataset.a===a)); }
+function setFont(f){ document.querySelectorAll('.font-preview').forEach(fp=>fp.classList.remove('sel')); document.getElementById('fp-'+f.replace('-serif','').replace('system','sys'))?.classList.add('sel'); }
+
+// ═══════════════════════════════════════════
+// NAVIGATION — 2-level
+// ═══════════════════════════════════════════
+const SECTION_SIDEBAR = {
+  dashboard: [],
+  marketing: [
+    {id:'trends',label:'Live Trends',icon:'M2,15 6,9 10,12 14,5 18,8'},
+    {id:'leads',label:'Lead Finder',icon:'M10,7 a4,4 0 1 0 0,8 a4,4 0 0 0 0,-8 M3,18 c0-4 3-6 7-6 s7,2 7,6'},
+  ],
+  content: [
+    {id:'generator',label:'AI Generator',icon:'M10 2L12.5 8H18L13.5 11.5L15.5 18L10 14.5L4.5 18L6.5 11.5L2 8H7.5Z'},
+    {id:'schedule',label:'Calendar',icon:'M2,5h16v14H2z M6,1v4 M14,1v4 M2,10h16'},
+  ],
+  business: [
+    {id:'jobs',label:'Job Finder',icon:'M2,7h16v11H2z M7,7V5a3,3 0,1,1 6,0v2 M2,12h16'},
+    {id:'clients',label:'Client Manager',icon:'M2,16a5,5 0,0,1 10,0 M7,4a4,4 0,1,0 0,8 M14,8a3,3 0,1,0 0,6 M18,16a5,5 0,0,0-7-4'},
+    {id:'newsletter',label:'Newsletter',icon:'M2,4h16v12H2z M2,7l8,5 8-5'},
+  ],
+  learn: [
+    {id:'learn',label:'Articles & Tips',icon:'M3,5l9-3 9,3v4c0,4-3,8-9,10C6,17 3,13 3,9z'},
+  ],
+  website: [
+    {id:'website',label:'Page Builder',icon:'M2,3h16v14H2z M2,8h16 M8,8v9'},
+  ],
+  chatbot: [],
+  profile: [
+    {id:'profile',label:'Profile & Portfolio',icon:'M10,7a4,4 0,1,0 0,8 a4,4 0,0,0 0,-8 M3,18c0-4 3-6 7-6 s7,2 7,6'},
+  ],
+  settings: [
+    {id:'settings',label:'Settings',icon:'M10,7a3,3 0,1,0 0,6 a3,3 0,0,0 0,-6 M10,2v2 M10,16v2 M2,10h2 M16,10h2 M4,4l1.5,1.5 M14.5,14.5L16,16 M4,16l1.5-1.5 M14.5,5.5L16,4'},
+  ],
+};
+
+function closeSidebar(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sb-backdrop').classList.remove('show'); }
+function openChatFAB(){ navSection('chatbot',document.querySelector('[data-section=chatbot]')); }
+
+function navSection(section, elOrFirstPage, firstPage){
+  S.currentSection = section;
+  document.querySelectorAll('.rail-btn').forEach(b=>b.classList.toggle('active',b.dataset.section===section));
+  const items = SECTION_SIDEBAR[section]||[];
+  const sb = document.getElementById('sidebar');
+  if(!items.length){ sb.classList.remove('open'); document.getElementById('sb-backdrop').classList.remove('show'); }
+  else {
+    sb.innerHTML = `<div class="sb-section">${section.charAt(0).toUpperCase()+section.slice(1)}</div>` +
+      items.map(it=>`<div class="sb-item ${it.id===(firstPage||items[0].id)?'active':''}" data-page="${it.id}" onclick="nav('${it.id}',this)">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="${it.icon}"/></svg>${esc(it.label)}
+      </div>`).join('') +
+      `<div class="sb-footer"><div class="user-card" onclick="navSection('profile',document.querySelector('[data-section=profile]'))"><div class="uc-av" id="sb-av2">${S.user.initials||'U'}</div><div><div class="uc-name" id="sb-name2">${esc(S.user.name)||'Guest'}</div><div class="uc-role" id="sb-role2">${esc(S.user.role)}</div></div></div></div>`;
+    sb.classList.add('open');
+    document.getElementById('sb-backdrop').classList.add('show');
+  }
+  const target = firstPage || (items.length ? items[0].id : section);
+  nav(target);
+}
+
+function nav(page, el){
+  document.querySelectorAll('.sb-item').forEach(i=>i.classList.toggle('active',i.dataset.page===page));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  S.currentPage = page;
+  // Update breadcrumb
+  const bc = document.getElementById('tp-breadcrumb');
+  if(bc){
+    const sectionLabels={dashboard:'Dashboard',marketing:'Marketing',content:'Content & AI',business:'Business',learn:'Learn',website:'My Website',chatbot:'AI Chat',profile:'Profile',settings:'Settings'};
+    const pageLabels={dashboard:'Dashboard',trends:'Live Trends',leads:'Lead Finder',generator:'AI Generator',schedule:'Calendar',jobs:'Job Finder',clients:'Clients',newsletter:'Newsletter',learn:'Articles',website:'Website Builder',chatbot:'AI Chat',profile:'Profile & Portfolio',settings:'Settings'};
+    const section = sectionLabels[S.currentSection]||S.currentSection;
+    const pageLabel = pageLabels[page]||page;
+    bc.innerHTML = section===pageLabel ? `<span class="tp-page">${esc(section)}</span>` : `<span class="tp-section">${esc(section)}</span><span class="tp-sep"> / </span><span class="tp-page">${esc(pageLabel)}</span>`;
+  }
+  // Close sidebar on mobile-ish
+  if(['generator','schedule','clients','learn','website','chatbot','profile','settings'].includes(page)) closeSidebar();
+  const initFns={
+    dashboard:initDash, trends:initTrends, leads:loadLeads, generator:initGenerator,
+    schedule:renderCal, jobs:initJobs, clients:renderClients, learn:initLearn,
+    website:initWebsite, chatbot:initChat, profile:initProfile, settings:()=>{},
+    newsletter:renderNL,
+  };
+  initFns[page]?.();
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+function toast(msg){ const w=document.getElementById('toasts'); const t=document.createElement('div'); t.className='toast'; t.innerHTML=`<span style="color:var(--accent)">✓</span><span>${esc(msg)}</span>`; w.appendChild(t); setTimeout(()=>{t.style.transition='.3s';t.style.opacity='0';setTimeout(()=>t.remove(),300);},3200); }
+
+// MODAL
+function showModal(html){ document.getElementById('mc').innerHTML=`<div class="overlay" onclick="if(event.target===this)closeMod()">${html}</div>`; }
+function closeMod(){ document.getElementById('mc').innerHTML=''; }
+function copyEl(id){ const e=document.getElementById(id); if(e){navigator.clipboard.writeText(e.textContent).catch(()=>{}); toast('Copied!');} }
+
+// ═══════════════════════════════════════════
+// ONBOARDING
+// ═══════════════════════════════════════════
+const OB=[
+  { sn:'Step 01 — 05', ht:"Let's build your profile.", hs:'TrendPalette adapts to who you are.',
+    body:()=>`<div style="display:flex;flex-direction:column;gap:11px">
+      <div class="field"><div class="fl">Your Name</div><input class="input" id="ob-name" placeholder="e.g. Ashley Thompson" value="${esc(S.obData.name)}"></div>
+      <div class="field"><div class="fl">Email</div><input class="input" id="ob-email" type="email" placeholder="you@example.com" value="${esc(S.obData.email)}"></div>
+      <div class="field"><div class="fl">Professional Tagline</div><input class="input" id="ob-tag" placeholder="e.g. Freelance digital artist · commissions open" value="${esc(S.obData.tagline)}"></div>
+    </div>` },
+  { sn:'Step 02 — 05', ht:'How do you work?', hs:'Select all that describe you.',
+    body:()=>`<div class="pick-grid">
+      ${[['fa','◈','Freelance Artist','Commissions & creative'],['gd','◉','Graphic Designer','Branding & visual'],['cc','▷','Content Creator','Video, blog, social'],['sb','◻','Small Business','Products & services'],['mk','▲','Marketer / Agency','Campaigns & growth'],['ot','◇','Other','Custom setup']].map(([id,ic,lb,sub])=>`
+      <div class="pick-btn ${S.obData.role===id?'sel':''}" onclick="S.obData.role='${id}';document.querySelectorAll('.pick-btn').forEach(b=>b.classList.remove('sel'));this.classList.add('sel');S.user.role={'fa':'Freelance Artist','gd':'Graphic Designer','cc':'Content Creator','sb':'Small Business Owner','mk':'Marketer','ot':'Creator'}['${id}']">
+        <div class="pick-icon">${ic}</div><div class="pick-label">${lb}</div><div class="pick-sub">${sub}</div>
+      </div>`).join('')}
+    </div>` },
+  { sn:'Step 03 — 05', ht:'Which industries are you in?', hs:'Select all — shapes your trends, leads & content.',
+    body:()=>`<div class="ind-grid">
+      ${['Digital Art & Illustration','Character Design','Furry Art / Fandom','Animation & Motion','Photography',
+        'UI/UX Design','Graphic Design','Brand Identity','Tattoo Art','Fine Art',
+        'Small Business Owner','E-commerce / Retail','Marketing & Advertising','Social Media Management',
+        'Content Marketing','SEO & Digital Marketing','Email Marketing','Influencer Marketing',
+        'Beauty & Fashion','Gaming & Esports','Music & Audio','Real Estate',
+        'Food & Hospitality','Health & Wellness','Education & Coaching','Technology / SaaS',
+        'Auto Detailing','Landscaping','Home Services','Other'].map(i=>`
+        <div class="tag ${S.obData.industries.includes(i)?'sel':''}" onclick="const idx=S.obData.industries.indexOf('${i.replace(/'/g,"\\'")}');if(idx>-1)S.obData.industries.splice(idx,1);else S.obData.industries.push('${i.replace(/'/g,"\\'")}');this.classList.toggle('sel')">${i}</div>`).join('')}
+    </div>` },
+  { sn:'Step 04 — 05', ht:'What opportunities are you looking for?', hs:'Powers your job matching and lead filtering.',
+    body:()=>`<div style="display:flex;flex-direction:column;gap:11px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="field"><div class="fl">Min Budget ($)</div><input class="input" id="ob-min" type="number" value="${S.obData.minBudget}"></div>
+        <div class="field"><div class="fl">Max Budget ($)</div><input class="input" id="ob-max" type="number" value="${S.obData.maxBudget}"></div>
+      </div>
+      <div class="field"><div class="fl">Products / Services You Offer</div><textarea class="textarea" id="ob-products" rows="3" placeholder="e.g. Character commissions $50-$300, Logo design $200-$800, Social media management $300/mo">${esc(S.obData.products||'')}</textarea></div>
+      <div class="field"><div class="fl">Key Skills</div><input class="input" id="ob-skills" placeholder="e.g. digital art, illustration, social media, copywriting" value="${esc(S.obData.skills)}"></div>
+    </div>` },
+  { sn:'Step 05 — 05', ht:'Pick your look.', hs:'Choose theme and accent. Change anytime.',
+    body:()=>`<div style="display:flex;flex-direction:column;gap:18px">
+      <div class="field"><div class="fl">Theme</div><div style="display:flex;gap:9px;flex-wrap:wrap">
+        ${[['aurora','linear-gradient(135deg,#7c3aed,#2563eb)','Aurora'],['sunset','linear-gradient(135deg,#ea580c,#dc2626)','Sunset'],['ocean','linear-gradient(135deg,#0891b2,#0d9488)','Ocean'],['forest','linear-gradient(135deg,#16a34a,#059669)','Forest'],['lavender','linear-gradient(135deg,#a855f7,#e879f9)','Lavender']].map(([k,bg,lbl])=>`
+        <button class="btn btn-ghost btn-sm" style="flex-direction:column;gap:5px;padding:12px 14px;${S.theme===k?'border-color:var(--accent);background:var(--ad)':''}" onclick="setTheme('${k}');renderOb()">
+          <div style="width:28px;height:28px;border-radius:7px;background:${bg}"></div><span style="font-size:.72rem">${lbl}</span>
+        </button>`).join('')}
+      </div></div>
+      <div class="field"><div class="fl">Accent</div><div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        ${[['violet','#8b5cf6'],['coral','#f97316'],['cyan','#06b6d4'],['rose','#f43f5e'],['emerald','#10b981'],['gold','#f59e0b']].map(([k,c])=>`
+        <div onclick="setAccent('${k}');renderOb()" style="width:28px;height:28px;border-radius:50%;background:${c};cursor:pointer;border:${S.accent===k?'3px solid var(--text)':'3px solid transparent'};transition:border .15s"></div>`).join('')}
+      </div></div>
+    </div>` },
+];
+
+function renderOb(){
+  const s=OB[S.obStep];
+  document.getElementById('ob-sn').textContent=s.sn;
+  document.getElementById('ob-ht').textContent=s.ht;
+  document.getElementById('ob-hs').textContent=s.hs;
+  document.getElementById('ob-body').innerHTML=s.body();
+  document.getElementById('ob-dots').innerHTML=OB.map((_,i)=>`<div class="ob-dot ${i===S.obStep?'active':i<S.obStep?'done':''}"></div>`).join('');
+  document.getElementById('ob-back').style.display=S.obStep>0?'inline-flex':'none';
+  document.getElementById('ob-next').textContent=S.obStep===OB.length-1?'Launch TrendPalette →':'Continue →';
+}
+
+function obNext(){
+  if(S.obStep===0){ const n=document.getElementById('ob-name')?.value.trim(); if(!n){toast('Please enter your name');return;} S.obData.name=n; S.obData.email=document.getElementById('ob-email')?.value; S.obData.tagline=document.getElementById('ob-tag')?.value; S.user.name=n; S.user.firstName=n.split(' ')[0]; S.user.initials=n.split(' ').map(p=>p[0]).join('').toUpperCase().slice(0,2); S.user.email=S.obData.email; }
+  if(S.obStep===3){ S.obData.minBudget=parseInt(document.getElementById('ob-min')?.value)||50; S.obData.maxBudget=parseInt(document.getElementById('ob-max')?.value)||500; S.obData.skills=document.getElementById('ob-skills')?.value||''; S.obData.products=document.getElementById('ob-products')?.value||''; }
+  if(S.obStep===OB.length-1){launchApp();return;}
+  S.obStep++; renderOb();
+}
+function obBack(){ if(S.obStep>0){S.obStep--;renderOb();} }
+
+function guestLogin(type){
+  const profiles = {
+    creator:{ name:'Ashley Draws', role:'Freelance Artist', industries:['Digital Art & Illustration','Character Design','Furry Art / Fandom'], skills:'digital art, illustration, character design', minBudget:50, maxBudget:500, products:'Character commissions $50-$300, Sticker sheets $30, Fursuit reference sheets $150' },
+    marketer:{ name:'Jordan Miles', role:'Marketer', industries:['Marketing & Advertising','Social Media Management','Content Marketing'], skills:'social media, copywriting, brand strategy, email marketing', minBudget:200, maxBudget:2000, products:'Social media management $500/mo, Content creation $300/mo, Ad campaign management $1000+' },
+    business:{ name:'Sam Rivera', role:'Small Business Owner', industries:['Small Business Owner','E-commerce / Retail'], skills:'product sales, customer service, local marketing', minBudget:100, maxBudget:1000, products:'Handmade candles $15-$45, Custom gift sets $60-$120, Wholesale orders $300+' },
+    dev:{ name:'Dev Mode', role:'Developer', industries:['Technology / SaaS'], skills:'all features', minBudget:0, maxBudget:99999, products:'All features unlocked for testing' },
+  };
+  const p = profiles[type]||profiles.dev;
+  S.user = {...S.user, name:p.name, firstName:p.name.split(' ')[0], role:p.role, industries:p.industries, skills:p.skills, minBudget:p.minBudget, maxBudget:p.maxBudget, initials:p.name.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2), products:p.products };
+  S.obData = {...S.obData, ...p};
+  // Seed demo data
+  S.clients = [
+    {name:'Jordan T.',username:'@jordant',email:'j@example.com',phone:'555-1234',address:'Austin, TX',products:'Character commission ($180), Sticker sheet ($30)',value:210,status:'Completed',newsletter:true,notes:'Great client, very clear brief'},
+    {name:'Luna Crafts',username:'@lunacrafts',email:'luna@crafts.co',phone:'555-5678',address:'Portland, OR',products:'Brand identity ($450)',value:450,status:'Active',newsletter:true,notes:'Ongoing project'},
+    {name:'PixelForge',username:'@pixelforge',email:'pf@pixel.io',phone:'',address:'Remote',products:'RPG character sheet ($220)',value:220,status:'Completed',newsletter:false,notes:'Fast communicator'},
+  ];
+  S.products = [{name:'Character Commission',sold:14,revenue:2520,avgPrice:180},{name:'Sticker Sheet',sold:22,revenue:660,avgPrice:30},{name:'Brand Identity',sold:4,revenue:1800,avgPrice:450},{name:'Reference Sheet',sold:9,revenue:1980,avgPrice:220}];
+  launchApp();
+}
+
+function launchApp(){
+  S.user.industries = S.user.industries.length ? S.user.industries : S.obData.industries;
+  const ob=document.getElementById('onboard'); ob.style.transition='opacity .3s'; ob.style.opacity='0';
+  setTimeout(()=>{ ob.remove(); const app=document.getElementById('app'); app.style.display='grid'; initUI(); navSection('dashboard'); renderChart(); toast(`Welcome to TrendPalette, ${S.user.firstName}!`); }, 300);
+}
+
+function initUI(){
+  const n=S.user.name||'Guest';
+  const av=document.getElementById('hdr-av');
+  if(av){ if(S.user.photoData){ av.innerHTML=`<img src="${S.user.photoData}" style="width:100%;height:100%;object-fit:cover;border-radius:9px">`; } else { av.textContent=S.user.initials||n[0]; } }
+  document.getElementById('plan-badge').textContent='Free';
+  document.getElementById('dash-fn').textContent=S.user.firstName||n;
+  const h=new Date().getHours();
+  document.getElementById('dash-greet').textContent=h<12?'morning':h<17?'afternoon':'evening';
+  document.getElementById('trends-sub').textContent=`Personalized for: ${S.user.industries.slice(0,3).join(', ')||'your niche'}`;
+  // Pre-fill profile
+  ['p-name','p-role','p-email','p-skills','p-bio'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; if(id==='p-name') el.value=n; else if(id==='p-role') el.value=S.user.role||''; else if(id==='p-email') el.value=S.user.email||''; else if(id==='p-skills') el.value=S.user.skills||''; else if(id==='p-bio') el.value=S.user.tagline||''; });
+  const pMin=document.getElementById('p-min'); if(pMin) pMin.value=S.user.minBudget;
+  const pMax=document.getElementById('p-max'); if(pMax) pMax.value=S.user.maxBudget;
+  const pProd=document.getElementById('p-products'); if(pProd) pProd.value=S.user.products||'';
+  const sig=`Best,\n${n}\n${S.user.role||'Creator'}\n${S.user.email||''}`;
+  const pSig=document.getElementById('p-sig'); if(pSig){ pSig.value=sig; document.getElementById('sig-prev').textContent=sig; }
+  const sn=document.getElementById('s-name'); if(sn) sn.value=n;
+  const se=document.getElementById('s-email'); if(se) se.value=S.user.email||'';
+  const siteSlug=document.getElementById('site-slug'); if(siteSlug) siteSlug.value=n.toLowerCase().replace(/\s/g,'');
+  const jobKw=document.getElementById('job-kw'); if(jobKw) jobKw.value=S.user.skills;
+  const jobMin=document.getElementById('job-min'); if(jobMin) jobMin.value=S.user.minBudget;
+  const jobMax=document.getElementById('job-max'); if(jobMax) jobMax.value=S.user.maxBudget;
+  setTheme(S.theme); setAccent(S.accent);
+}
+
+// ═══════════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════════
+function initDash(){ renderChart(); renderInsights(); updateKPIs(); renderDashTrends(); }
+function renderChart(){ const el=document.getElementById('dash-chart');if(!el)return; const v=[42,58,51,73,65,88,94],d=['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; el.innerHTML=v.map((h,i)=>`<div class="bar-col"><div class="bar${i===6?' today':''}" style="height:${h}%"></div><div class="bar-day${i===6?' today':''}">${d[i]}</div></div>`).join(''); }
+function renderInsights(){ const el=document.getElementById('dash-insights');if(!el)return; const ind=S.user.industries[0]||'your niche'; el.innerHTML=`<div class="insight good"><div class="insight-tag">Opportunity</div>Rising interest in ${ind} content this week.</div><div class="insight warn"><div class="insight-tag">Timing</div>Best posting window: 6–8 PM for your audience.</div><div class="insight"><div class="insight-tag">Live Signal</div>New job posts mentioning "${(S.user.skills.split(',')[0]||'your skills').trim()}" in the last hour.</div>`; }
+function updateKPIs(){
+  const tot=S.clients.length; document.getElementById('k-clients').textContent=tot; document.getElementById('k-sched').textContent=S.schedPosts.length;
+  const rev=S.clients.reduce((a,c)=>a+(parseFloat(c.value)||0),0);
+  ['crm-tot','crm-act','crm-rev','crm-avg'].forEach(id=>{ const el=document.getElementById(id); if(!el)return; if(id==='crm-tot') el.textContent=tot; else if(id==='crm-act') el.textContent=S.clients.filter(c=>c.status==='Active').length; else if(id==='crm-rev') el.textContent='$'+rev.toLocaleString(); else if(id==='crm-avg') el.textContent='$'+(tot?Math.round(rev/tot):0); });
+  const subs=S.clients.filter(c=>c.newsletter).length; const nlEl=document.getElementById('nl-subs'); if(nlEl) nlEl.textContent=subs;
+}
+function renderDashTrends(){ const el=document.getElementById('dash-trends');if(!el)return; const TRENDS=[{n:'Furry OC Character Art',t:['Twitter','FurAffinity','+180%'],s:88},{n:'Brutalist UI Illustration',t:['Twitter','YouTube','+340%'],s:98},{n:'Retro Pixel Branding',t:['Instagram','TikTok','+210%'],s:82},{n:'Organic Motion Logos',t:['YouTube','LinkedIn','+155%'],s:74}]; el.innerHTML=TRENDS.map((t,i)=>`<div class="trend-row" onclick="document.getElementById('dq-input').value='${esc(t.n)}';toast('Loaded into generator')"><div class="trend-num ${i<2?'hot':''}">${String(i+1).padStart(2,'0')}</div><div><div class="trend-name">${esc(t.n)}</div><div class="trend-chips">${t.t.map(g=>`<span class="trend-chip">${esc(g)}</span>`).join('')}</div></div><div><div style="font-family:'DM Serif Display',serif;font-size:1.1rem;color:var(--accent)">${t.s}</div><div class="trend-bar"><div class="trend-bar-fill" style="width:${t.s}%"></div></div></div></div>`).join(''); }
+function refreshDash(){ initDash(); toast('Dashboard refreshed!'); }
+
+// ═══════════════════════════════════════════
+// MARKETING: TRENDS
+// ═══════════════════════════════════════════
+function initTrends(){ }
+
+async function loadPopularPosts(){
+  const el=document.getElementById('pop-posts-container');
+  const btn=document.getElementById('pop-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span> Loading…';
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:16px;color:var(--text2)"><span class="spin"></span> AI is fetching the most popular posts right now in: ${S.user.industries.slice(0,3).join(', ')||'your niche'}…</div>`;
+  const ind=S.user.industries.join(', ')||'digital art, freelance';
+  try{
+    const d=await callAIJSON(
+      `Search Instagram, TikTok, and Twitter right now for the most popular and engaging posts related to: ${ind}.
+      For each post find: platform, creator username, approximate likes/views, post description, and why it worked.
+      Return JSON array: [{"platform":"Instagram","username":"@creator","likes":"124K","views":"890K","description":"What the post shows/says","why":"Why it got engagement","niche":"relevant to which of the user's industries","url":"best guess link or empty string"}]
+      Find 6-9 posts across the 3 platforms. Be specific with real creator examples.`,
+      'You are a social media analyst with web search access.', true, 1400
+    );
+    el.innerHTML=Array.isArray(d)?d.map(p=>{
+      const platClass={'Instagram':'pp-ig','TikTok':'pp-tt','Twitter/X':'pp-tw','YouTube':'pp-yt'}[p.platform]||'pp-tw';
+      return `<div class="pop-post">
+        <div class="pop-post-platform ${platClass}">${esc(p.platform)}</div>
+        <div style="font-weight:600;font-size:.85rem;margin-bottom:5px">${esc(p.username)}</div>
+        <div class="pop-post-text">${esc(p.description)}</div>
+        <div style="font-size:.78rem;color:var(--accent);margin-bottom:7px;font-style:italic">Why it worked: ${esc(p.why)}</div>
+        <div class="pop-post-stats">
+          ${p.likes?`<div class="pop-post-stat"><span>♥</span><strong>${esc(p.likes)}</strong></div>`:''}
+          ${p.views?`<div class="pop-post-stat"><span>▷</span><strong>${esc(p.views)}</strong></div>`:''}
+          ${p.url?`<a href="${p.url}" target="_blank" style="margin-left:auto;font-size:.7rem">View ↗</a>`:''}
+        </div>
+        <button class="btn btn-ghost btn-xs" style="margin-top:8px" onclick="document.getElementById('gen-input').value='${esc(p.description)}';navSection('content')">Use in Generator</button>
+      </div>`;
+    }).join(''):el.innerHTML='No posts returned.';
+  }catch(e){ el.innerHTML=`<div style="color:var(--text3);padding:16px">Could not load posts: ${e.message}</div>`; }
+  btn.disabled=false; btn.textContent='Refresh';
+}
+
+async function aiTrends(){
+  const q=document.getElementById('trend-q').value.trim(); if(!q){toast('Enter a topic to research');return;}
+  const btn=document.getElementById('trend-btn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+  const card=document.getElementById('trend-research-card'); card.style.display='block';
+  const body=document.getElementById('trend-research-body'); body.innerHTML=`<div style="display:flex;align-items:center;gap:10px;color:var(--text2)"><span class="spin"></span> Researching "${q}" across all platforms…</div>`;
+  card.scrollIntoView({behavior:'smooth'});
+  try{
+    const d=await callAIJSON(
+      `Research current trending content for: "${q}". User is a ${S.user.role} in ${S.user.industries.join(', ')||'creative work'}.
+      Return JSON: {"overview":"...","trends":[{"name":"","description":"","evidence":"specific creator names, post examples, engagement numbers","score":90}],"topCreators":["@handle - followers"],"hashtags":["#tag"],"storyboardPrompt":"specific content idea guaranteed to perform — describe subject, style, mood, format","redditLinks":[{"subreddit":"","url":"","why":""}]}
+      Find 10 trends with REAL creator examples and evidence.`,
+      'You are a trend analyst with live web search.', true, 2000
+    );
+    body.innerHTML=`<div style="font-style:italic;font-family:'DM Serif Display',serif;font-size:1.05rem;line-height:1.6;margin-bottom:10px">${esc(d.overview||'')}</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+    ${(d.trends||[]).map((t,i)=>`<div style="padding:12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><div style="font-weight:600">${String(i+1).padStart(2,'0')}. ${esc(t.name)}</div><span class="bdg bdg-accent">${t.score||''}</span></div>
+      <div style="font-size:.83rem;color:var(--text2);line-height:1.5;margin-bottom:5px">${esc(t.description||'')}</div>
+      <div style="font-size:.75rem;color:var(--text3);font-style:italic"><strong style="color:var(--text2);font-style:normal">Evidence:</strong> ${esc(t.evidence||'')}</div>
+      <button class="btn btn-ghost btn-xs" style="margin-top:7px" onclick="document.getElementById('gen-input').value='${(t.name||'').replace(/'/g,"\\'")}';navSection('content')">Use in Generator</button>
+    </div>`).join('')}
+    </div>
+    ${d.redditLinks?.length?`<div><div class="label" style="margin-bottom:7px">Related Reddit Communities</div><div style="display:flex;gap:7px;flex-wrap:wrap">${d.redditLinks.map(r=>`<a href="${r.url}" target="_blank" class="btn btn-ghost btn-sm">r/${esc(r.subreddit)} ↗</a>`).join('')}</div></div>`:''}
+    <div style="background:var(--ad);border:1px solid var(--ag);border-radius:10px;padding:14px">
+      <div class="label" style="color:var(--accent);margin-bottom:8px">Guaranteed-to-Perform Content Idea</div>
+      <div style="font-style:italic;font-size:1rem;line-height:1.6">${esc(d.storyboardPrompt||'')}</div>
+      <button class="btn btn-primary btn-sm" style="margin-top:12px" onclick="genStoryboard('${(d.storyboardPrompt||'').replace(/'/g,"\\'").replace(/\n/g,' ')}')">Generate Storyboard</button>
+    </div>`;
+  }catch(e){ body.innerHTML=`<div style="color:#ef4444">Research failed: ${e.message}</div>`; }
+  btn.disabled=false; btn.textContent='Research Now';
+}
+
+// ═══════════════════════════════════════════
+// LEADS
+// ═══════════════════════════════════════════
+async function loadLeads(){
+  const kw=(S.user.skills.split(',')[0]||'freelance').trim();
+  loadRedditSection('leads-r1','forhire',kw);
+  loadRedditSection('leads-r2','HireaFreelancer',kw);
+}
+async function loadRedditSection(elId,sub,kw){
+  const el=document.getElementById(elId);if(!el)return;
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:12px;color:var(--text3)"><span class="spin"></span> Loading r/${sub}…</div>`;
+  try{ const posts=await fetchReddit(sub,kw,'new',8); el.innerHTML=posts.length?posts.map(p=>redditCard(p,true)).join(''):`<div style="padding:12px;color:var(--text3);font-size:.83rem">No posts found. <a href="https://reddit.com/r/${sub}" target="_blank">Browse r/${sub} ↗</a></div>`; }
+  catch(e){ el.innerHTML=`<div style="padding:12px;font-size:.83rem;color:var(--text3)">Reddit API unavailable. <a href="https://reddit.com/r/${sub}" target="_blank" style="color:var(--accent)">Browse directly ↗</a></div>`; }
+}
+
+// ═══════════════════════════════════════════
+// AI GENERATOR — with image
+// ═══════════════════════════════════════════
+function initGenerator(){
+  const el=document.getElementById('gen-topics');if(!el)return;
+  const topics={ 'Furry Art / Fandom':['Furry OC character reveal','Fandom commission batch open','Species design showcase'], 'Digital Art & Illustration':['Character art commission drop','Speed art process video','New illustration series'], 'Brand Identity':['Logo case study','Brand rebrand reveal','Color palette exploration'], 'Marketing & Advertising':['Campaign results breakdown','Social media growth tips','Ad creative split test'], 'Small Business Owner':['Behind-the-scenes day','Customer success story','New product launch'] };
+  const ind=S.user.industries[0]||'Digital Art & Illustration';
+  const t=topics[ind]||topics['Digital Art & Illustration'];
+  el.innerHTML=t.map(topic=>`<div class="tag" style="display:block;padding:7px 10px;border-radius:7px;cursor:pointer" onclick="document.getElementById('gen-input').value='${topic.replace(/'/g,"\\'")}';this.classList.add('sel')">${topic}</div>`).join('');
+}
+
+function handleFileSelect(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{ const data=e.target.result; S.imageData=data; S.imageBase64=data.split(',')[1]; const mtype=file.type||'image/jpeg'; S.imageMime=mtype; document.getElementById('upload-img').src=data; document.getElementById('upload-name').textContent=file.name+' ('+Math.round(file.size/1024)+'KB)'; document.getElementById('upload-placeholder').style.display='none'; document.getElementById('upload-preview-wrap').style.display='block'; };
+  reader.readAsDataURL(file);
+}
+function handleDrop(e){ e.preventDefault(); document.getElementById('upload-zone').classList.remove('drag'); const f=e.dataTransfer.files[0]; if(f){document.getElementById('gen-file').files=e.dataTransfer.files; handleFileSelect(document.getElementById('gen-file'));} }
+function clearUpload(){ S.imageBase64=null; S.imageData=null; document.getElementById('gen-file').value=''; document.getElementById('upload-img').src=''; document.getElementById('upload-placeholder').style.display='block'; document.getElementById('upload-preview-wrap').style.display='none'; }
+
+async function runGen(){
+  const input=document.getElementById('gen-input').value.trim();
+  const plat=document.getElementById('gen-plat').value;
+  const goal=document.getElementById('gen-goal').value;
+  const tone=document.getElementById('gen-tone').value;
+  if(!input&&!S.imageBase64){toast('Upload an image or describe your concept');return;}
+  const btn=document.getElementById('gen-btn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span> Analyzing & Generating…';
+  const profileCtx=`User: ${S.user.name}, ${S.user.role}, industries: ${S.user.industries.join(', ')||'creative'}. Products/services: ${S.user.products||S.user.skills||'creative work'}. Platform: ${plat}. Goal: ${goal}. Tone: ${tone}.`;
+  const capPrompt=`${profileCtx}${input?' Concept: '+input:''}\nGenerate an optimized ${plat} caption${S.imageBase64?' based on the image provided':''}. Return JSON: {"caption":"...","hashtags":["#t1","#t2","#t3","#t4","#t5","#t6"],"tips":"2-3 specific engagement tips for this post"}`;
+  try{
+    let d;
+    if(S.imageBase64){
+      const txt=await callAIWithImage(capPrompt,S.imageBase64,S.imageMime||'image/jpeg','You are a social media expert who analyzes artwork and generates viral captions. Return ONLY valid JSON, no markdown.',900);
+      const start=txt.search(/[\[{]/); d=JSON.parse(txt.slice(start));
+    } else {
+      d=await callAIJSON(capPrompt,'You are a social media expert who generates viral captions.',false,600);
+    }
+    document.getElementById('gen-caption').textContent=d.caption||'';
+    document.getElementById('gen-tags').innerHTML=(d.hashtags||[]).map(h=>`<span class="chip">${esc(h)}</span>`).join('');
+    document.getElementById('gen-tips').textContent=d.tips||'';
+    document.getElementById('gen-out').style.display='flex';
+    S.genHist.unshift({cap:d.caption,topic:input||'[Image upload]'});
+    const hist=document.getElementById('gen-hist');
+    if(hist) hist.innerHTML=S.genHist.slice(0,5).map(h=>`<div class="tag" style="display:block;padding:6px 9px;border-radius:6px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.75rem" title="${esc(h.cap)}" onclick="document.getElementById('gen-input').value='${(h.topic||'').replace(/'/g,"\\'")}'">${esc((h.cap||'').slice(0,60))}…</div>`).join('');
+    toast('Caption generated!');
+  }catch(e){ toast(`Generation failed: ${e.message}`); }
+  btn.disabled=false; btn.textContent='✦ Generate Optimized Caption';
+}
+
+async function quickGen(){
+  const input=document.getElementById('dq-input').value.trim()||S.user.skills.split(',')[0]?.trim()||'creative work';
+  const btn=document.getElementById('dq-btn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+  try{
+    const d=await callAIJSON(`Write a short Instagram caption for ${S.user.name} (${S.user.role}). Topic: ${input}. Products: ${S.user.products||S.user.skills}. Return JSON: {"caption":"...","hashtags":["#t1","#t2","#t3","#t4","#t5"]}`,'You are a social media copywriter.',false,400);
+    document.getElementById('dq-cap').textContent=d.caption||''; document.getElementById('dq-tags').innerHTML=(d.hashtags||[]).map(h=>`<span class="chip">${esc(h)}</span>`).join(''); document.getElementById('dq-out').style.display='flex';
+  }catch(e){ toast(`Failed: ${e.message}`); }
+  btn.disabled=false; btn.textContent='Generate Caption';
+}
+
+function showPublish(){ showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">Publish Content</div><div class="modal-sub">Social media API integration coming soon</div></div><div class="modal-body"><div style="background:var(--ad);border:1px solid var(--ag);border-radius:8px;padding:12px;font-size:.85rem;line-height:1.55">Social media auto-publishing is in development. Copy your caption and post manually for now.</div><div style="display:flex;flex-wrap:wrap;gap:7px">${['Twitter/X','Instagram','LinkedIn','TikTok','YouTube'].map(p=>`<div class="tag sel" onclick="this.classList.toggle('sel')">${p}</div>`).join('')}</div></div><div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Close</button><button class="btn btn-primary btn-sm" onclick="copyEl('gen-caption');closeMod()">Copy Caption</button></div></div>`); }
+
+// ═══════════════════════════════════════════
+// CALENDAR SCHEDULER
+// ═══════════════════════════════════════════
+function renderCal(){
+  const d=S.calDate; const year=d.getFullYear(); const month=d.getMonth();
+  document.getElementById('cal-month-lbl').textContent=d.toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const grid=document.getElementById('cal-grid');if(!grid)return;
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  let html=days.map(d=>`<div class="cal-day-header">${d}</div>`).join('');
+  const first=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const today=new Date();
+  for(let i=0;i<first;i++) html+=`<div class="cal-day other-month"><div class="cal-day-num">${new Date(year,month,i-first+1).getDate()}</div></div>`;
+  for(let day=1;day<=daysInMonth;day++){
+    const isToday=today.getDate()===day&&today.getMonth()===month&&today.getFullYear()===year;
+    const posts=S.schedPosts.filter(p=>p.day===day&&p.month===month&&p.year===year);
+    html+=`<div class="cal-day${isToday?' today':''}" onclick="showAddPostDay(${day},${month},${year})">
+      <div class="cal-day-num">${day}</div>
+      ${posts.map(p=>`<div class="cal-post ${p.platform||'tw'}" title="${esc(p.content)}" onclick="event.stopPropagation();editPost(${p.id})">${esc(p.content.slice(0,20))}</div>`).join('')}
+      <div class="cal-add-btn">+</div>
+    </div>`;
+  }
+  grid.innerHTML=html;
+  // Upcoming list
+  const upcoming=document.getElementById('upcoming-posts');
+  if(upcoming) upcoming.innerHTML=S.schedPosts.sort((a,b)=>new Date(a.year,a.month,a.day)-new Date(b.year,b.month,b.day)).slice(0,10).map(p=>`<div class="sched-item"><div class="sched-time">${p.month+1}/${p.day}</div><div style="flex:1;font-size:.83rem">${esc(p.content)}</div><span class="bdg bdg-accent" style="font-size:.58rem">${p.platformLabel||p.platform}</span><button class="btn btn-ghost btn-xs" onclick="S.schedPosts=S.schedPosts.filter(x=>x.id!==${p.id});renderCal();updateKPIs()">✕</button></div>`).join('')||`<div style="text-align:center;padding:16px;color:var(--text3);font-style:italic">No scheduled posts yet. Click any day on the calendar to add one.</div>`;
+}
+function calPrev(){ S.calDate=new Date(S.calDate.getFullYear(),S.calDate.getMonth()-1,1); renderCal(); }
+function calNext(){ S.calDate=new Date(S.calDate.getFullYear(),S.calDate.getMonth()+1,1); renderCal(); }
+
+function showAddPost(day,month,year){ showAddPostDay(day||S.calDate.getDate(),month!==undefined?month:S.calDate.getMonth(),year||S.calDate.getFullYear()); }
+function addToCalendar(){ const d=new Date(); showAddPostDay(d.getDate(),d.getMonth(),d.getFullYear()); }
+
+function showAddPostDay(day,month,year){
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">Add Scheduled Post</div><div class="modal-sub">${new Date(year,month,day).toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</div></div>
+    <div class="modal-body">
+      <div class="field"><div class="fl">Caption / Content</div><textarea class="textarea" id="np-content" rows="4" placeholder="Your post caption…">${esc(document.getElementById('gen-caption')?.textContent||'')}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="field"><div class="fl">Platform</div><select class="input" id="np-plat">
+          <option value="tw">Twitter/X</option><option value="ig">Instagram</option><option value="li">LinkedIn</option><option value="tt">TikTok</option><option value="yt">YouTube</option>
+        </select></div>
+        <div class="field"><div class="fl">Time</div><input class="input" id="np-time" type="time" value="18:00"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-primary btn-sm" onclick="addPost(${day},${month},${year})">Add to Calendar</button></div>
+  </div>`);
+}
+let postId=0;
+function addPost(day,month,year){
+  const c=document.getElementById('np-content')?.value.trim(); if(!c){toast('Enter content');return;}
+  const p=document.getElementById('np-plat').value; const labels={tw:'Twitter',ig:'Instagram',li:'LinkedIn',tt:'TikTok',yt:'YouTube'};
+  S.schedPosts.push({id:++postId,content:c,platform:p,platformLabel:labels[p],day,month,year,time:document.getElementById('np-time').value});
+  closeMod(); renderCal(); updateKPIs(); toast('Post added to calendar!');
+}
+
+// ═══════════════════════════════════════════
+// JOBS
+// ═══════════════════════════════════════════
+function initJobs(){ const el=document.getElementById('job-results'); if(el) el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--text3);font-style:italic">Enter keywords and click Search.</div>`; }
+async function jobSearch(){
+  const kw=document.getElementById('job-kw').value.trim(); const min=parseInt(document.getElementById('job-min').value)||0; const max=parseInt(document.getElementById('job-max').value)||99999; const sub=document.getElementById('job-sub').value;
+  const btn=document.getElementById('job-btn'); btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+  const el=document.getElementById('job-results'); el.innerHTML=`<div style="display:flex;align-items:center;gap:8px;padding:20px;color:var(--text3)"><span class="spin"></span> Searching r/${sub} for "${kw}" ($${min}–$${max})…</div>`;
+  try{
+    const posts=await fetchReddit(sub,kw,'new',16);
+    const filtered=posts.filter(p=>{ const b=extractBudget((p.title||'')+(p.selftext||'')); if(!b) return true; return b[0]>=min&&b[1]<=max*1.5; });
+    if(!filtered.length){ el.innerHTML=`<div style="padding:20px;text-align:center;color:var(--text3)">No posts found. Try different keywords or a wider budget range.<br><a href="https://reddit.com/r/${sub}/search?q=${encodeURIComponent(kw)}&sort=new" target="_blank" style="color:var(--accent)">Search r/${sub} directly ↗</a></div>`; return; }
+    el.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 2px;margin-bottom:8px"><div style="font-size:.82rem;color:var(--text2)">${filtered.length} results in r/${sub}</div><a href="https://reddit.com/r/${sub}/search?q=${encodeURIComponent(kw)}&sort=new" target="_blank" style="font-size:.75rem;color:var(--accent)">View all on Reddit ↗</a></div>`+filtered.map(p=>redditCard(p,true)).join('');
+  }catch(e){ el.innerHTML=`<div style="padding:20px;color:var(--text3)">Reddit unavailable. <a href="https://reddit.com/r/${sub}/search?q=${encodeURIComponent(kw)}&sort=new" target="_blank" style="color:var(--accent)">Search directly ↗</a></div>`; }
+  btn.disabled=false; btn.textContent='Search Reddit';
+}
+
+// ═══════════════════════════════════════════
+// CLIENTS CRM
+// ═══════════════════════════════════════════
+function renderClients(){
+  const tb=document.getElementById('crm-tb');if(!tb)return;
+  const vis=S.clients.filter(c=>c._vis!==false);
+  if(!vis.length){ tb.innerHTML=`<tr><td colspan="11" style="text-align:center;padding:20px;color:var(--text3);font-style:italic">No clients yet. Click "+ Add Client".</td></tr>`; updateKPIs(); return; }
+  tb.innerHTML=vis.map((c,i)=>{
+    const idx=S.clients.indexOf(c);
+    return `<tr onclick="showAddClient(${idx})">
+      <td>${esc(c.name)}</td><td>${esc(c.username||'')}</td><td>${esc(c.email||'')}</td><td>${esc(c.phone||'')}</td><td>${esc(c.address||'')}</td>
+      <td style="max-width:160px;white-space:normal;font-size:.78rem">${esc(c.products||'')}</td>
+      <td class="${(c.value||0)>300?'hot-sale':(c.value||0)>100?'med-sale':''}">$${(c.value||0).toLocaleString()}</td>
+      <td><span class="bdg ${c.status==='Active'?'bdg-green':c.status==='Completed'?'bdg-accent':'bdg-orange'}">${c.status||'Prospect'}</span></td>
+      <td><span class="bdg ${c.newsletter?'bdg-green':'bdg-orange'}">${c.newsletter?'✓':'—'}</span></td>
+      <td style="max-width:120px;white-space:normal;font-size:.75rem;color:var(--text2)">${esc(c.notes||'')}</td>
+      <td style="display:flex;gap:4px"><button class="btn btn-ghost btn-xs" onclick="event.stopPropagation();showAddClient(${idx})">Edit</button><button class="btn btn-danger btn-xs" onclick="event.stopPropagation();if(confirm('Remove?')){S.clients.splice(${idx},1);renderClients()}">✕</button></td>
+    </tr>`;
+  }).join('');
+  updateKPIs();
+  renderBestSellers();
+}
+function filterClients(q){ S.clients.forEach(c=>c._vis=!q||(c.name+c.email+c.products+'').toLowerCase().includes(q.toLowerCase())); renderClients(); }
+function sortClients(by){ if(!by)return; S.clients.sort((a,b)=>by==='value'?(b.value||0)-(a.value||0):by==='name'?(a.name||'').localeCompare(b.name||''):(a.status||'').localeCompare(b.status||'')); renderClients(); }
+
+function showAddClient(idx){
+  const c=typeof idx==='number'?S.clients[idx]:{};
+  const edit=typeof idx==='number';
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">${edit?'Edit':'Add'} Client</div></div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><div class="fl">Name *</div><input class="input" id="ci-n" value="${esc(c.name||'')}"></div>
+        <div class="field"><div class="fl">Username</div><input class="input" id="ci-un" value="${esc(c.username||'')}" placeholder="@handle"></div>
+        <div class="field"><div class="fl">Email</div><input class="input" id="ci-e" value="${esc(c.email||'')}" type="email"></div>
+        <div class="field"><div class="fl">Phone</div><input class="input" id="ci-ph" value="${esc(c.phone||'')}"></div>
+        <div class="field"><div class="fl">Address</div><input class="input" id="ci-addr" value="${esc(c.address||'')}"></div>
+        <div class="field"><div class="fl">Total Value ($)</div><input class="input" id="ci-v" type="number" value="${c.value||0}"></div>
+      </div>
+      <div class="field"><div class="fl">Products / Services Purchased</div><textarea class="textarea" id="ci-pr" rows="2">${esc(c.products||'')}</textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field"><div class="fl">Status</div><select class="input" id="ci-st"><option ${c.status==='Prospect'?'selected':''}>Prospect</option><option ${c.status==='Active'?'selected':''}>Active</option><option ${c.status==='Completed'?'selected':''}>Completed</option></select></div>
+        <div class="field"><div class="fl">Notes</div><input class="input" id="ci-no" value="${esc(c.notes||'')}"></div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:.85rem"><input type="checkbox" id="ci-nl" ${c.newsletter?'checked':''} style="accent-color:var(--accent)"> Subscribe to newsletter list</label>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-primary btn-sm" onclick="saveClient(${edit?idx:'undefined'})">Save Client</button></div>
+  </div>`);
+}
+function saveClient(idx){
+  const n=document.getElementById('ci-n')?.value.trim();if(!n){toast('Enter a name');return;}
+  const c={name:n,username:document.getElementById('ci-un').value,email:document.getElementById('ci-e').value,phone:document.getElementById('ci-ph').value,address:document.getElementById('ci-addr').value,products:document.getElementById('ci-pr').value,value:parseFloat(document.getElementById('ci-v').value)||0,status:document.getElementById('ci-st').value,notes:document.getElementById('ci-no').value,newsletter:document.getElementById('ci-nl').checked};
+  if(typeof idx==='number'&&!isNaN(idx))S.clients[idx]=c;else S.clients.push(c);
+  closeMod();renderClients();toast(`Client ${typeof idx==='number'?'updated':'added'}: ${n}`);
+}
+function exportClientsCSV(){
+  const headers=['Name','Username','Email','Phone','Address','Products','Value','Status','Newsletter','Notes'];
+  const rows=S.clients.map(c=>[c.name,c.username,c.email,c.phone,c.address,c.products,c.value,c.status,c.newsletter?'Yes':'No',c.notes].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(','));
+  const csv=[headers.join(','),...rows].join('\n');
+  const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download='clients.csv';a.click();
+  toast('CSV exported!');
+}
+
+function renderBestSellers(){
+  const el=document.getElementById('best-sellers');if(!el)return;
+  if(!S.products.length){el.innerHTML=`<div style="text-align:center;padding:16px;color:var(--text3);font-style:italic">No products tracked yet. Click "+ Add Product".</div>`;return;}
+  const sorted=[...S.products].sort((a,b)=>b.revenue-a.revenue);
+  const maxRev=sorted[0].revenue;
+  el.innerHTML=sorted.map((p,i)=>`<div class="product-row">
+    <div class="product-rank${i===0?' first':''}">${String(i+1).padStart(2,'0')}</div>
+    <div class="product-bar-wrap"><div style="font-size:.88rem;font-weight:600;margin-bottom:4px">${esc(p.name)}</div><div class="product-fill" style="width:${Math.round(p.revenue/maxRev*100)}%"></div></div>
+    <div style="text-align:right;font-size:.78rem"><div style="font-family:'DM Serif Display',serif;font-size:1rem;color:var(--accent)">$${p.revenue.toLocaleString()}</div><div style="color:var(--text3)">${p.sold} sold · avg $${p.avgPrice}</div></div>
+  </div>`).join('');
+}
+function showAddProduct(){
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">Add Product / Service</div></div>
+    <div class="modal-body">
+      <div class="field"><div class="fl">Product / Service Name</div><input class="input" id="pp-n" placeholder="e.g. Character Commission"></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+        <div class="field"><div class="fl">Units Sold</div><input class="input" id="pp-s" type="number" placeholder="0"></div>
+        <div class="field"><div class="fl">Avg Price ($)</div><input class="input" id="pp-p" type="number" placeholder="0"></div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-primary btn-sm" onclick="const n=document.getElementById('pp-n').value.trim();const s=parseInt(document.getElementById('pp-s').value)||0;const p=parseFloat(document.getElementById('pp-p').value)||0;if(!n){toast('Enter name');return;}S.products.push({name:n,sold:s,revenue:s*p,avgPrice:p});closeMod();renderBestSellers();toast('Product added!')">Add</button></div>
+  </div>`);
+}
+
+// ═══════════════════════════════════════════
+// NEWSLETTER
+// ═══════════════════════════════════════════
+function renderNL(){ updateKPIs(); }
+function showCompose(){
+  const subs=S.clients.filter(c=>c.newsletter);
+  showModal(`<div class="modal" style="width:620px"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">Compose Email Campaign</div><div class="modal-sub">Sending to ${subs.length} subscriber${subs.length!==1?'s':''}</div></div>
+    <div class="modal-body">
+      <div class="field"><div class="fl">Subject</div><input class="input" id="nl-subj" placeholder="e.g. New commissions open — weekly update!"></div>
+      <div class="field"><div class="fl">Email Body</div><textarea class="textarea" id="nl-body" rows="10" placeholder="Write your email…"></textarea></div>
+      <div style="background:var(--ad);border:1px solid var(--ag);border-radius:8px;padding:9px;font-size:.8rem">${subs.length?`Recipients: ${subs.map(c=>c.name).join(', ')}`:'No subscribed clients yet.'}</div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-ghost btn-sm" onclick="aiDraftNL()">AI Draft</button><button class="btn btn-primary btn-sm" onclick="sendNL()">Send Campaign</button></div>
+  </div>`);
+}
+async function aiDraftNL(){
+  const subj=document.getElementById('nl-subj')?.value||'Weekly update'; const body=document.getElementById('nl-body'); if(!body)return;
+  toast('AI drafting…');
+  try{ const t=await callAI(`Newsletter from ${S.user.name} (${S.user.role}). Products: ${S.user.products||S.user.skills}. Subject: "${subj}". Warm, under 200 words. End with signature: ${document.getElementById('p-sig')?.value||'Best, '+S.user.name}`,'You are an email copywriter.',false,400); body.value=t; toast('Draft ready!'); }catch(e){ toast(`Failed: ${e.message}`); }
+}
+function sendNL(){
+  const s=document.getElementById('nl-subj')?.value||'Newsletter'; const n=S.clients.filter(c=>c.newsletter).length;
+  S.nlCampaigns.unshift({subject:s,sent:new Date().toLocaleDateString(),recipients:n});
+  closeMod(); const hist=document.getElementById('nl-hist');
+  if(hist) hist.innerHTML=S.nlCampaigns.map(c=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--surface2);border-radius:8px;border:1px solid var(--border);margin-bottom:5px"><div><div style="font-size:.88rem;font-weight:500">${esc(c.subject)}</div><div style="font-size:.7rem;color:var(--text3);margin-top:1px">${c.sent} · ${c.recipients} recipients</div></div><span class="bdg bdg-green">Sent</span></div>`).join('');
+  toast(`Campaign sent to ${n} subscriber${n!==1?'s':''}!`);
+}
+
+// ═══════════════════════════════════════════
+// LEARN
+// ═══════════════════════════════════════════
+const ARTICLES=[
+  {id:'rule-of-thirds',title:'The Rule of Thirds: The Secret Behind Viral Compositions',cat:'Technique',free:true,bg:'linear-gradient(135deg,#1a0a3e,#2d1155)',thumb:'◉',thumbBg:'radial-gradient(ellipse at 30% 50%,rgba(139,92,246,.5) 0%,rgba(37,99,235,.3) 60%,transparent 100%)',desc:"Used by every top creator — here's how to apply it."},
+  {id:'color-psychology',title:'Color Psychology: Which Palettes Get the Most Saves',cat:'Design',free:true,bg:'linear-gradient(135deg,#0a1a3e,#1a0a3e)',thumb:'◈',thumbBg:'conic-gradient(from 0deg,#f43f5e,#f97316,#f59e0b,#10b981,#06b6d4,#8b5cf6,#f43f5e)',desc:"Research-backed color combinations that drive engagement."},
+  {id:'hook-formula',title:'The 3-Second Hook Formula That Stops the Scroll',cat:'Copywriting',free:false,bg:'linear-gradient(135deg,#1a0a0a,#3a0f0f)',thumb:'✦',thumbBg:'radial-gradient(ellipse at 50% 30%,rgba(244,63,94,.6) 0%,rgba(239,68,68,.2) 60%,transparent 100%)',desc:"Why the first line matters more than everything else."},
+  {id:'golden-ratio',title:'Golden Ratio in Art: Why Some Compositions Feel Perfect',cat:'Technique',free:false,bg:'linear-gradient(135deg,#1a1500,#2e2000)',thumb:'⌀',thumbBg:'radial-gradient(ellipse at 60% 40%,rgba(245,158,11,.5) 0%,rgba(234,88,12,.2) 60%,transparent 100%)',desc:"Ancient math, modern virality."},
+  {id:'video-structure',title:'What Every Viral Video Has in Common (200 Posts Analyzed)',cat:'Video',free:false,bg:'linear-gradient(135deg,#0a0a1a,#0a1a0a)',thumb:'▷',thumbBg:'linear-gradient(135deg,rgba(16,185,129,.4),rgba(8,145,178,.3))',desc:"The exact structure: hook, tension, payoff."},
+  {id:'hashtag-science',title:'The Hashtag Science: Small vs. Large, Which Actually Works',cat:'Growth',free:false,bg:'linear-gradient(135deg,#0f0f1a,#1a0f2e)',thumb:'#',thumbBg:'radial-gradient(ellipse at 40% 60%,rgba(139,92,246,.5) 0%,rgba(88,28,220,.2) 60%,transparent 100%)',desc:"Stop guessing — here's what the data says."},
+  {id:'pricing-psychology',title:'Pricing Psychology: Why $97 Outsells $100 Every Time',cat:'Business',free:false,bg:'linear-gradient(135deg,#0a1a10,#0a0a1a)',thumb:'$',thumbBg:'radial-gradient(ellipse at 50% 50%,rgba(16,185,129,.4) 0%,rgba(6,182,212,.2) 60%,transparent 100%)',desc:"Small changes in how you price = big changes in conversion."},
+  {id:'redbubble-guide',title:'How to Build Passive Income on Redbubble as an Artist',cat:'Monetize',free:false,bg:'linear-gradient(135deg,#1a0a00,#2e1500)',thumb:'🎨',thumbBg:'linear-gradient(135deg,rgba(249,115,22,.4),rgba(234,88,12,.2))',desc:"Step-by-step from setup to first sale."},
+  {id:'tiktok-algorithm',title:'How the TikTok Algorithm Actually Works in 2025',cat:'Platform',free:false,bg:'linear-gradient(135deg,#0a0a0a,#1a0a1a)',thumb:'♪',thumbBg:'radial-gradient(ellipse at 50% 20%,rgba(244,63,94,.5) 0%,rgba(0,0,0,.5) 80%)',desc:"The distribution model no one is talking about."},
+];
+
+function initLearn(){
+  const g=document.getElementById('article-grid');if(!g)return;
+  g.innerHTML=ARTICLES.map(a=>`<div class="article-card" onclick="openArticle('${a.id}')">
+    <div class="article-thumb" style="background:${a.thumbBg};font-size:1.8rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.4)">${a.thumb}
+      ${!a.free?`<div class="article-locked"><div class="article-locked-ic">🔒</div><div class="article-locked-txt">Pro</div></div>`:''}
+    </div>
+    <div class="article-body">
+      <div style="margin-bottom:6px"><span class="article-cat">${a.cat}</span></div>
+      <div class="article-title">${esc(a.title)}</div>
+      <div class="article-meta"><span style="color:${a.free?'#10b981':'var(--accent)'}">● ${a.free?'Free':'Pro only'}</span></div>
+    </div>
+  </div>`).join('');
+}
+
+function openArticle(id){
+  const a=ARTICLES.find(x=>x.id===id);if(!a)return;
+  if(!a.free){ showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">Pro Article</div><div class="modal-sub">${esc(a.title)}</div></div><div class="modal-body"><div style="text-align:center;padding:20px"><div style="font-size:2rem;margin-bottom:12px">🔒</div><div style="font-size:1rem;font-weight:600;margin-bottom:8px">This article is for Pro members</div><div style="font-size:.88rem;color:var(--text2);margin-bottom:20px">Unlock all articles, advanced marketing guides, and premium features.</div><button class="btn btn-primary btn-full" onclick="document.getElementById('plan-badge').textContent='Pro';closeMod();toast('Upgraded to Pro!')">Upgrade to Pro — $12/mo</button></div></div></div>`); return; }
+  showModal(`<div class="modal" style="width:680px"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><span class="article-cat">${a.cat}</span><div class="modal-title" style="margin-top:8px">${esc(a.title)}</div></div><div class="modal-body"><div style="font-style:italic;font-size:1rem;line-height:1.65;font-family:'DM Serif Display',serif">${esc(a.desc)}</div><div style="padding:14px;background:var(--surface2);border-radius:8px;line-height:1.7;font-size:.88rem">This article content is a placeholder — connect your CMS or write full article content here. TrendPalette's article system supports rich text, images, embedded videos, and code examples.</div><div style="background:var(--ad);border:1px solid var(--ag);border-radius:8px;padding:14px"><div class="label" style="margin-bottom:8px;color:var(--accent)">Apply This to Your Content</div><button class="btn btn-primary btn-sm" onclick="navSection('content');closeMod()">Generate a post using this technique →</button></div></div></div>`);
+}
+
+function openPlatformGuide(p){
+  const guides={instagram:{name:'Instagram',tips:['Post Reels for 3–5x reach boost','Use 5–10 niche hashtags, not 30','Stories 5x/week for algorithm signals','Best time: Tuesday–Friday 11AM–1PM']},tiktok:{name:'TikTok',tips:['Hook in first 1.5 seconds is everything','Trending audio = built-in distribution','Post 1–3x daily while growing','3–5 minute videos now outperform short']},twitter:{name:'Twitter/X',tips:['Threads outperform single tweets 10x','Post between 8–10AM and 6–8PM','Quote tweet your own wins','Engage first 30 minutes after posting']},youtube:{name:'YouTube',tips:['Thumbnail + title = 70% of your CTR','First 30 seconds must deliver the promise','Chapters improve watch time significantly','Shorts feed into long-form discovery']}};
+  const g=guides[p];if(!g)return;
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">${g.name} Growth Guide</div><div class="modal-sub">Evidence-based tactics for ${S.user.role}</div></div><div class="modal-body"><ul style="display:flex;flex-direction:column;gap:10px">${g.tips.map(t=>`<li style="display:flex;align-items:flex-start;gap:10px;font-size:.88rem;line-height:1.55"><span style="color:var(--accent);flex-shrink:0;margin-top:2px">◉</span>${esc(t)}</li>`).join('')}</ul></div><div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Close</button><button class="btn btn-primary btn-sm" onclick="navSection('content');closeMod()">Generate Content for ${g.name}</button></div></div>`);
+}
+
+async function loadLearnPosts(){
+  const el=document.getElementById('learn-posts'); const btn=document.getElementById('learn-pop-btn');
+  btn.disabled=true; btn.innerHTML='<span class="spin"></span>';
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:14px;color:var(--text2)"><span class="spin"></span> Finding most engaging posts in your niche…</div>`;
+  const ind=S.user.industries.join(', ')||'digital art';
+  try{
+    const d=await callAIJSON(`Find the most engaging posts right now on Instagram, TikTok, and Twitter for creators in: ${ind}. Find posts that have exceptional engagement and explain what makes them work. Return JSON array: [{"platform":"Instagram","username":"@name","description":"what the post shows","likes":"120K","views":"","engagement_reason":"why it worked so well","niche":"${ind}"}]. Find 6 posts.`,'You are a social media analyst with web search.',true,1200);
+    el.innerHTML=Array.isArray(d)?d.map(p=>`<div class="pop-post">
+      <div class="pop-post-platform ${{'Instagram':'pp-ig','TikTok':'pp-tt','Twitter/X':'pp-tw','YouTube':'pp-yt'}[p.platform]||'pp-tw'}">${esc(p.platform)}</div>
+      <div style="font-weight:600;font-size:.85rem;margin-bottom:5px">${esc(p.username)}</div>
+      <div class="pop-post-text">${esc(p.description)}</div>
+      <div style="font-size:.78rem;color:var(--accent);margin-bottom:7px;font-style:italic">Why it worked: ${esc(p.engagement_reason)}</div>
+      <div class="pop-post-stats">${p.likes?`<div class="pop-post-stat"><span>♥</span><strong>${esc(p.likes)}</strong></div>`:''}${p.views?`<div class="pop-post-stat"><span>▷</span><strong>${esc(p.views)}</strong></div>`:''}</div>
+      <button class="btn btn-ghost btn-xs" style="margin-top:7px" onclick="document.getElementById('gen-input').value='${esc(p.description)}';navSection('content')">Replicate This</button>
+    </div>`).join(''):'';
+  }catch(e){ el.innerHTML=`<div style="color:var(--text3);padding:14px">Could not load posts: ${e.message}</div>`; }
+  btn.disabled=false; btn.textContent='Refresh';
+}
+
+// ═══════════════════════════════════════════
+// WEBSITE BUILDER
+// ═══════════════════════════════════════════
+function initWebsite(){
+  const slug=document.getElementById('site-slug');
+  if(slug&&!slug.value) slug.value=(S.user.name||'yourname').toLowerCase().replace(/\s/g,'');
+  document.getElementById('preview-url-bar').textContent='trendpalette.io/'+(slug?.value||'yourname');
+}
+function toggleBlock(btn){ const row=btn.closest('.site-block'); const bdg=row.querySelector('.bdg'); const vis=bdg.classList.contains('bdg-green'); bdg.textContent=vis?'Hidden':'Visible'; bdg.className='bdg '+(vis?'bdg-orange':'bdg-green'); }
+function previewSite(){
+  const slug=document.getElementById('site-slug')?.value||'yourname';
+  document.getElementById('preview-url-bar').textContent=`trendpalette.io/${slug}`;
+  const name=S.user.name||'Your Name'; const role=S.user.role||'Creator'; const bio=document.getElementById('p-bio')?.value||'Your bio here.';
+  const siteHtml=`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${name}</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'DM Sans',sans-serif;background:#0f0c1a;color:#f0ecff}a{color:#8b5cf6}.hero{background:linear-gradient(135deg,#7c3aed,#2563eb);padding:60px 40px;text-align:center}.hero h1{font-family:Georgia,serif;font-size:2.2rem;margin-bottom:10px}.hero p{font-size:1rem;opacity:.8;max-width:500px;margin:0 auto 20px}.btn{display:inline-block;padding:10px 24px;background:rgba(255,255,255,.15);color:#fff;border-radius:8px;border:1px solid rgba(255,255,255,.3);text-decoration:none;font-weight:500}.section{padding:40px;max-width:900px;margin:0 auto}.section h2{font-family:Georgia,serif;font-size:1.4rem;margin-bottom:20px;color:#8b5cf6}.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.port-item{background:#1e1833;border:1px solid rgba(139,92,246,.2);border-radius:10px;padding:40px 20px;text-align:center;font-size:1.5rem}.form{background:#1e1833;border:1px solid rgba(139,92,246,.2);border-radius:12px;padding:24px}.form input,.form textarea{width:100%;background:#130f20;border:1px solid rgba(139,92,246,.3);border-radius:7px;padding:10px 12px;color:#f0ecff;margin-bottom:10px;font-family:inherit;font-size:.9rem}.form button{background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border:none;padding:10px 24px;border-radius:8px;cursor:pointer;font-weight:600}</style></head><body><div class="hero"><h1>${name}</h1><p>${role}</p><p style="margin-top:8px;font-size:.9rem;opacity:.7">${bio}</p><a href="mailto:${S.user.email||''}" class="btn" style="margin-top:16px">Get in Touch</a></div><div class="section"><h2>Portfolio</h2><div class="port-grid">${S.portfolio.map(p=>`<div class="port-item"><div style="margin-bottom:8px">◈</div><div style="font-size:.85rem;font-weight:600">${p.title}</div><div style="font-size:.72rem;opacity:.5;margin-top:3px">${p.category}</div></div>`).join('')||'<div class="port-item">Add portfolio items in your profile</div>'}</div></div><div class="section"><h2>Services</h2><p style="color:rgba(240,236,255,.6);line-height:1.7">${document.getElementById('p-products')?.value||'Services listed here.'}</p></div><div class="section"><h2>Client Feedback</h2><div class="form"><input placeholder="Your name"><input placeholder="Your email" type="email"><textarea rows="4" placeholder="Share your experience…"></textarea><button onclick="alert('Thank you for your feedback!')">Submit Feedback</button></div></div></body></html>`;
+  document.getElementById('site-preview-frame').srcdoc=siteHtml;
+}
+function publishSite(){ previewSite(); toast('Site published! Share: trendpalette.io/'+(document.getElementById('site-slug')?.value||'yourname')); }
+function insertCustomHTML(){ const c=document.getElementById('custom-html')?.value; if(c) toast('Custom HTML applied (preview updated)'); previewSite(); }
+
+// ═══════════════════════════════════════════
+// CHATBOT
+// ═══════════════════════════════════════════
+function initChat(){ if(!S.chatHist.length) addChatMsg('assistant', `Hello, ${S.user.firstName||'there'}! I'm your TrendPalette AI.\n\nI know your full profile:\n• Role: ${S.user.role}\n• Industries: ${S.user.industries.join(', ')||'not set'}\n• Skills: ${S.user.skills||'not set'}\n• Products: ${S.user.products||'not set'}\n• ${S.clients.length} client(s) in your CRM\n\nI search the web live. Try:\n• "Give me 10 trending posts from ${S.user.industries[0]||'my niche'} with examples"\n• "Find Reddit commissions for ${S.user.skills.split(',')[0]||'my skills'} between $${S.user.minBudget}–$${S.user.maxBudget}"\n• "Generate a storyboard for a viral post"\n• "What's trending on Instagram for my audience today?"`); }
+function addChatMsg(role,text){ S.chatHist.push({role,text}); const el=document.getElementById('chat-msgs');if(!el)return; const d=document.createElement('div'); d.className=`msg ${role}`; d.innerHTML=`<div class="msg-av">${role==='user'?(S.user.initials||'U'):'AI'}</div><div class="msg-bubble">${esc(text)}</div>`; el.appendChild(d); el.scrollTop=el.scrollHeight; }
+function chatQ(q){ document.getElementById('chat-in').value=q; sendChat(); }
+function clearChat(){ S.chatHist=[]; document.getElementById('chat-msgs').innerHTML=''; initChat(); }
+async function sendChat(){
+  const inp=document.getElementById('chat-in'); const text=inp.value.trim(); if(!text)return;
+  addChatMsg('user',text); inp.value=''; inp.style.height='auto';
+  const btn=document.getElementById('chat-btn'); btn.disabled=true;
+  const el=document.getElementById('chat-msgs');
+  const typing=document.createElement('div'); typing.className='msg'; typing.id='typing';
+  typing.innerHTML=`<div class="msg-av">AI</div><div class="msg-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  el.appendChild(typing); el.scrollTop=el.scrollHeight;
+  const sys=`You are TrendPalette AI for ${S.user.name}.
+Profile: Role=${S.user.role}, Industries=${S.user.industries.join(', ')}, Skills=${S.user.skills}, Products=${S.user.products||S.user.skills}, Budget=$${S.user.minBudget}-$${S.user.maxBudget}.
+Portfolio: ${S.portfolio.map(p=>`${p.title} (${p.category},$${p.price})`).join('; ')||'None'}.
+Clients(${S.clients.length}): ${S.clients.slice(0,4).map(c=>`${c.name}: ${c.products} ($${c.value})`).join('; ')||'None'}.
+Schedule: ${S.schedPosts.length} posts.
+Recent chat: ${S.chatHist.slice(-5).map(m=>`${m.role}: ${m.text.slice(0,80)}`).join(' | ')}.
+Search web for live/current info. Be specific with their profile data.`;
+  try{ const r=await callAI(text,sys,true,1000); typing.remove(); addChatMsg('assistant',r); }
+  catch(e){ typing.remove(); addChatMsg('assistant',`Connection error: ${e.message}`); }
+  btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════
+// PROFILE / PORTFOLIO / RESUME
+// ═══════════════════════════════════════════
+function initProfile(){ renderPortGrid(); document.getElementById('p-products').addEventListener('input',()=>S.user.products=document.getElementById('p-products').value); }
+function renderPortGrid(){
+  const g=document.getElementById('port-grid');if(!g)return;
+  const icons=['◇','◈','◉','◻','◐','◑'];
+  g.innerHTML=(S.portfolio.length?S.portfolio.map((p,i)=>`<div class="port-item" onclick="editPort(${i})">
+    <div class="port-thumb">${p.imageData?`<img src="${p.imageData}" alt="">`:`<span style="font-size:2rem">${icons[i%icons.length]}</span>`}</div>
+    <div class="port-meta"><div class="port-title">${esc(p.title)}</div><div class="port-sub">${esc(p.category)}${p.price?' · $'+p.price:''}</div></div>
+  </div>`).join(''):'') + `<div class="port-item" style="border-style:dashed;opacity:.5" onclick="showAddPort()"><div class="port-thumb"><span style="font-size:1.5rem;color:var(--text3)">+</span></div><div class="port-meta"><div style="font-size:.82rem;color:var(--text3)">Add work</div></div></div>`;
+}
+function showAddPort(){
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">Add Portfolio Work</div></div>
+    <div class="modal-body">
+      <div class="field"><div class="fl">Title</div><input class="input" id="pw-t" placeholder="e.g. Character Commission for @client"></div>
+      <div class="field"><div class="fl">Category</div><input class="input" id="pw-c" placeholder="e.g. Character Art, Logo Design, Social Media"></div>
+      <div class="field"><div class="fl">Price ($)</div><input class="input" id="pw-p" type="number" placeholder="0"></div>
+      <div class="field"><div class="fl">Description</div><textarea class="textarea" id="pw-d" rows="3" placeholder="Brief description…"></textarea></div>
+      <div class="field"><div class="fl">Upload Image (optional)</div><input type="file" accept="image/*" id="pw-img" style="padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;width:100%;color:var(--text)"></div>
+    </div>
+    <div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-primary btn-sm" onclick="addPort()">Add to Portfolio</button></div>
+  </div>`);
+}
+function addPort(){
+  const t=document.getElementById('pw-t')?.value.trim();if(!t){toast('Enter a title');return;}
+  const imgInput=document.getElementById('pw-img');
+  const item={title:t,category:document.getElementById('pw-c').value,price:parseFloat(document.getElementById('pw-p').value)||0,desc:document.getElementById('pw-d').value,imageData:null};
+  if(imgInput.files[0]){ const r=new FileReader(); r.onload=e=>{item.imageData=e.target.result;S.portfolio.push(item);closeMod();renderPortGrid();toast('Portfolio item added!');}; r.readAsDataURL(imgInput.files[0]); }
+  else { S.portfolio.push(item); closeMod(); renderPortGrid(); toast('Portfolio item added!'); }
+}
+function editPort(i){ const p=S.portfolio[i]; showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">Edit Portfolio Item</div></div><div class="modal-body"><div class="field"><div class="fl">Title</div><input class="input" id="pw-t" value="${esc(p.title)}"></div><div class="field"><div class="fl">Category</div><input class="input" id="pw-c" value="${esc(p.category)}"></div><div class="field"><div class="fl">Price ($)</div><input class="input" id="pw-p" type="number" value="${p.price||0}"></div><div class="field"><div class="fl">Description</div><textarea class="textarea" id="pw-d" rows="3">${esc(p.desc||'')}</textarea></div></div><div class="modal-foot"><button class="btn btn-danger btn-sm" onclick="S.portfolio.splice(${i},1);renderPortGrid();closeMod()">Delete</button><button class="btn btn-ghost btn-sm" onclick="closeMod()">Cancel</button><button class="btn btn-primary btn-sm" onclick="S.portfolio[${i}]={...S.portfolio[${i}],title:document.getElementById('pw-t').value,category:document.getElementById('pw-c').value,price:parseFloat(document.getElementById('pw-p').value)||0,desc:document.getElementById('pw-d').value};renderPortGrid();closeMod();toast('Updated!')">Save</button></div></div>`); }
+function saveProfile(){ S.user.name=document.getElementById('p-name')?.value||S.user.name; S.user.firstName=S.user.name.split(' ')[0]; S.user.role=document.getElementById('p-role')?.value||S.user.role; S.user.email=document.getElementById('p-email')?.value||S.user.email; S.user.skills=document.getElementById('p-skills')?.value||S.user.skills; S.user.products=document.getElementById('p-products')?.value||S.user.products; S.user.minBudget=parseInt(document.getElementById('p-min')?.value)||50; S.user.maxBudget=parseInt(document.getElementById('p-max')?.value)||1000; initUI(); toast('Profile saved!'); }
+
+function previewResume(){
+  const n=document.getElementById('p-name')?.value||S.user.name; const role=document.getElementById('p-role')?.value||S.user.role; const email=document.getElementById('p-email')?.value||S.user.email; const bio=document.getElementById('p-bio')?.value||''; const skills=document.getElementById('p-top-skills')?.value||''; const tools=document.getElementById('p-tools')?.value||''; const exp=document.getElementById('p-exp')?.value||''; const edu=document.getElementById('p-edu')?.value||''; const links=document.getElementById('p-links')?.value||''; const products=document.getElementById('p-products')?.value||'';
+  showModal(`<div class="modal" style="width:680px;max-height:90vh"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">Portfolio PDF Preview</div></div><div class="modal-body"><div class="resume-preview">
+    <h1>${esc(n)}</h1><div style="font-size:.9rem;color:#555;margin-bottom:8px">${esc(role)} · ${esc(email)}</div>
+    <div style="height:2px;background:linear-gradient(90deg,#7c3aed,#2563eb);margin-bottom:16px"></div>
+    ${bio?`<div class="resume-section"><div class="resume-section-title">About</div><div class="resume-item">${esc(bio)}</div></div>`:''}
+    ${products?`<div class="resume-section"><div class="resume-section-title">Services Offered</div><div class="resume-item" style="white-space:pre-line">${esc(products)}</div></div>`:''}
+    ${skills?`<div class="resume-section"><div class="resume-section-title">Skills</div><div class="resume-item">${esc(skills)}</div></div>`:''}
+    ${tools?`<div class="resume-section"><div class="resume-section-title">Tools & Software</div><div class="resume-item">${esc(tools)}</div></div>`:''}
+    ${exp?`<div class="resume-section"><div class="resume-section-title">Experience</div><div class="resume-item" style="white-space:pre-line">${esc(exp)}</div></div>`:''}
+    ${edu?`<div class="resume-section"><div class="resume-section-title">Education & Certifications</div><div class="resume-item" style="white-space:pre-line">${esc(edu)}</div></div>`:''}
+    ${S.portfolio.length?`<div class="resume-section"><div class="resume-section-title">Selected Portfolio</div><div class="resume-item">${S.portfolio.map(p=>`${p.title} (${p.category}${p.price?' — $'+p.price:''})`).join(' · ')}</div></div>`:''}
+    ${links?`<div class="resume-section"><div class="resume-section-title">Links & Social</div><div class="resume-item" style="white-space:pre-line">${esc(links)}</div></div>`:''}
+  </div></div><div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Close</button><button class="btn btn-primary btn-sm" onclick="exportResume()">Export as PDF</button></div></div>`);
+}
+function exportResume(){ toast('Opening print dialog — Save as PDF in your browser'); setTimeout(()=>window.print(),400); }
+
+// ═══════════════════════════════════════════
+// OUTREACH
+// ═══════════════════════════════════════════
+async function showOutreach(title,link){
+  const sig=document.getElementById('p-sig')?.value||`Best,\n${S.user.name}`;
+  showModal(`<div class="modal"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">Draft Outreach</div><div class="modal-sub">AI-personalized for this opportunity</div></div><div class="modal-body"><div style="padding:9px 11px;background:var(--surface2);border-radius:7px;font-size:.82rem;border:1px solid var(--border);margin-bottom:4px">${esc(title)}</div><div style="display:flex;align-items:center;gap:9px;color:var(--text2)" id="oa-load"><span class="spin"></span> Drafting personalized outreach…</div><textarea class="textarea" id="oa-text" rows="10" style="display:none"></textarea></div><div class="modal-foot"><a href="${link}" target="_blank" class="btn btn-ghost btn-sm">View Post ↗</a><button class="btn btn-ghost btn-sm" onclick="copyEl('oa-text')">Copy</button><button class="btn btn-primary btn-sm" onclick="toast('Outreach copied! Send it manually.');copyEl('oa-text');closeMod()">Copy & Close</button></div></div>`);
+  try{ const r=await callAI(`Outreach from ${S.user.name} (${S.user.role}) to this post: "${title}". Skills: ${S.user.skills}. Products: ${S.user.products||S.user.skills}. Sign with: ${sig}. Under 110 words. Natural, confident, not salesy.`,'You are a professional copywriter.',false,300); document.getElementById('oa-load').style.display='none'; const ta=document.getElementById('oa-text'); ta.style.display='block'; ta.value=r; }
+  catch(e){ document.getElementById('oa-load').innerHTML=`<span style="color:#ef4444">Failed: ${e.message}</span>`; }
+}
+
+// ═══════════════════════════════════════════
+// STORYBOARD
+// ═══════════════════════════════════════════
+async function genStoryboard(prompt){
+  showModal(`<div class="modal" style="width:680px"><div class="modal-x" onclick="closeMod()">✕</div><div class="modal-head"><div class="modal-title">AI Storyboard</div></div><div class="modal-body" id="sb-body"><div style="display:flex;align-items:center;gap:10px;color:var(--text2)"><span class="spin"></span> Generating storyboard…</div></div><div class="modal-foot"><button class="btn btn-ghost btn-sm" onclick="closeMod()">Close</button><button class="btn btn-primary btn-sm" onclick="toast('Added to calendar!');closeMod()">Add to Calendar</button></div></div>`);
+  try{
+    const d=await callAIJSON(`Create a 6-panel storyboard for: "${prompt}". Creator: ${S.user.name} (${S.user.role}, ${S.user.industries.join(', ')}). Products: ${S.user.products||S.user.skills}. Return JSON: {"title":"","panels":[{"num":1,"visual":"describe what to show","caption":"text","tip":"production tip"}],"strategy":"why this works","caption":"full post caption","hashtags":["#t"]}`,'You are a content strategist.',false,1200);
+    document.getElementById('sb-body').innerHTML=`<div style="font-family:'DM Serif Display',serif;font-size:1.1rem;margin-bottom:10px">${esc(d.title||'')}</div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">${(d.panels||[]).map(p=>`<div style="background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:12px"><div style="font-size:.62rem;color:var(--accent);font-family:'JetBrains Mono',monospace;margin-bottom:5px">Panel ${p.num}</div><div style="height:65px;background:var(--bg2);border-radius:6px;margin-bottom:7px;display:flex;align-items:center;justify-content:center;font-size:.7rem;text-align:center;padding:6px;color:var(--text2);line-height:1.3">${esc(p.visual)}</div><div style="font-size:.78rem;line-height:1.4;color:var(--text2)">${esc(p.caption)}</div>${p.tip?`<div style="font-size:.65rem;color:var(--accent);margin-top:5px;font-family:'JetBrains Mono',monospace">${esc(p.tip)}</div>`:''}</div>`).join('')}</div><div style="background:var(--ad);border:1px solid var(--ag);border-radius:9px;padding:12px"><div class="label" style="margin-bottom:6px">Why This Works</div><div style="font-size:.85rem;line-height:1.5">${esc(d.strategy||'')}</div></div><div><div class="label" style="margin-bottom:5px">Caption</div><div style="font-style:italic;font-size:.95rem;padding:11px;background:var(--surface2);border-radius:8px;border:1px solid var(--border)">${esc(d.caption||'')}</div></div><div style="display:flex;flex-wrap:wrap;gap:5px">${(d.hashtags||[]).map(h=>`<span class="chip">${esc(h)}</span>`).join('')}</div>`;
+  }catch(e){ document.getElementById('sb-body').innerHTML=`<div style="color:#ef4444">Failed: ${e.message}</div>`; }
+}
+
+// ═══════════════════════════════════════════
+// SETTINGS
+// ═══════════════════════════════════════════
+function showPlans(){
+  showModal(`<div class="modal" style="width:660px"><div class="modal-x" onclick="closeMod()">✕</div>
+    <div class="modal-head"><div class="modal-title">Choose Your Plan</div><div class="modal-sub">Start free. Upgrade when you're ready.</div></div>
+    <div class="modal-body" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+      <div style="padding:18px;background:var(--surface2);border:1px solid var(--border);border-radius:12px">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:6px">Free</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:2rem;color:var(--text);margin-bottom:4px">$0</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-bottom:14px">Forever free · No card needed</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--text2)">
+          <div>✓ Dashboard & basic trends</div><div>✓ 5 AI captions / mo</div><div>✓ Lead Finder</div><div>✓ 3 clients in CRM</div>
+        </div>
+        <button class="btn btn-ghost btn-full btn-sm" style="margin-top:14px" onclick="closeMod()">Current Plan</button>
+      </div>
+      <div style="padding:18px;background:var(--ad);border:2px solid var(--accent);border-radius:12px;position:relative">
+        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:.6rem;font-weight:700;padding:3px 10px;border-radius:10px;white-space:nowrap">Most Popular</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:6px;color:var(--accent)">Pro</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:2px">$12</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-bottom:14px">/ month · 7-day free trial</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--text2)">
+          <div>✓ Unlimited AI generations</div><div>✓ Deep trend research</div><div>✓ Unlimited clients</div><div>✓ Full Learn library</div><div>✓ Newsletter campaigns</div><div>✓ Portfolio PDF export</div>
+        </div>
+        <button class="btn btn-primary btn-full btn-sm" style="margin-top:14px" onclick="document.getElementById('plan-badge').textContent='Pro';toast('Welcome to Pro! 🎉');closeMod()">Start Pro Trial</button>
+      </div>
+      <div style="padding:18px;background:var(--surface2);border:1px solid var(--border);border-radius:12px">
+        <div style="font-family:'DM Serif Display',serif;font-size:1.2rem;margin-bottom:6px">Business</div>
+        <div style="font-family:'DM Serif Display',serif;font-size:2rem;margin-bottom:4px">$29</div>
+        <div style="font-size:.72rem;color:var(--text3);margin-bottom:14px">/ month · For teams & agencies</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:.8rem;color:var(--text2)">
+          <div>✓ Everything in Pro</div><div>✓ 5 team members</div><div>✓ Multi-brand management</div><div>✓ White-label reports</div>
+        </div>
+        <button class="btn btn-outline btn-full btn-sm" style="margin-top:14px" onclick="toast('Contact amusante021@gmail.com for Business');closeMod()">Contact for Business</button>
+      </div>
+    </div>
+  </div>`);
+}
+
+
+
+// ═══════════════════════════════════════════
+// GLOBAL SEARCH
+// ═══════════════════════════════════════════
+function globalSearch(q){ if(!q) return; if(q.toLowerCase().includes('trend')) navSection('marketing'); else if(q.toLowerCase().includes('job')||q.toLowerCase().includes('commission')) navSection('business','jobs'); else if(q.toLowerCase().includes('client')) navSection('business','clients'); else if(q.toLowerCase().includes('learn')||q.toLowerCase().includes('article')) navSection('learn'); }
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  renderOb();
+  // Auto-init accent dots
+  document.querySelectorAll('.th-dot').forEach(d=>d.classList.toggle('active',d.dataset.t==='aurora'));
+  document.querySelectorAll('.ac-dot').forEach(d=>d.classList.toggle('active',d.dataset.a==='violet'));
+});
+</script>
+</body>
+</html>
